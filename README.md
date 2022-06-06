@@ -12,8 +12,8 @@ O projeto está sendo desenvolvido como requisito fundamental para finalização
 ## Criadores
 
 - [@joseantonion03](https://www.github.com/joseantonion03)
-- [@CauaneC](https://www.instagram.com/CauaneC/)
-- [@lauradias1](https://www.instagram.com/lauradias1/)
+- [@CauaneC](https://www.github.com/CauaneC)
+- [@lauradias1](https://www.github.com/lauradias1)
 
 
 ## Pilha de tecnologia
