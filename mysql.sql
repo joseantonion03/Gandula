@@ -1,22 +1,17 @@
-CREATE DATABASE Gandula IF NOT EXISTS;
+CREATE DATABASE gandula IF NOT EXISTS;
 
-CREATE TABLE `horario` (
+CREATE TABLE `usuario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(220) DEFAULT NULL,
-  `color` varchar(10) DEFAULT NULL,
-  `start` datetime DEFAULT NULL,
-  `end` datetime DEFAULT NULL,
+  `nome` varchar(100) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(250) NOT NULL,
+  `datanascimento` date NOT NULL,
+  `telefone` varchar(20) NOT NULL,
+  `tipo` varchar(40) NOT NULL,
+  `foto` varchar(200) NOT NULL,
+  `token` varchar(250) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8;
-
-CREATE TABLE `postagem` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `idUserCriador` int(11) NOT NULL,
-  `idTurma` int(11) NOT NULL,
-  `conteudo` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `data` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 3 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `turma` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,7 +21,7 @@ CREATE TABLE `turma` (
   `cor` varchar(10) NOT NULL,
   `codigo` varchar(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 7 DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `turmamembros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -34,16 +29,49 @@ CREATE TABLE `turmamembros` (
   `idUserMembro` int(11) NOT NULL,
   `cor` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 2 DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 DEFAULT CHARSET = utf8mb4 
 
-CREATE TABLE `usuario` (
+CREATE TABLE `postagem` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nome` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `senha` varchar(250) NOT NULL,
-  `datanascimento` date NOT NULL,
-  `tipo` varchar(40) NOT NULL,
-  `foto` varchar(200) NOT NULL,
-  `token` varchar(250) NOT NULL,
+  `idUserCriador` int(11) NOT NULL,
+  `idTurma` int(11) NOT NULL,
+  `conteudo` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 6 DEFAULT CHARSET = utf8mb4;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci 
+
+CREATE TABLE `horario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idTurma` int(11) NOT NULL,
+  `title` varchar(220) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `start` datetime DEFAULT NULL,
+  `end` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 37 DEFAULT CHARSET = utf8 
+
+CREATE TABLE `enquete` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_turma` int(11) NOT NULL,
+  `titulo` varchar(250) NOT NULL,
+  `texto` longtext NOT NULL,
+  `data_inicial` datetime DEFAULT NULL,
+  `data_final` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 36 DEFAULT CHARSET = utf8mb4 
+
+CREATE TABLE `enquete_pergunta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idEnquete` int(11) NOT NULL,
+  `idDono` int(11) NOT NULL,
+  `pergunta` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 24 DEFAULT CHARSET = utf8mb4 
+
+CREATE TABLE `enquete_resposta` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idEnqueteResposta` int(11) NOT NULL,
+  `idEnquete` int(11) NOT NULL,
+  `idDono` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB AUTO_INCREMENT = 20 DEFAULT CHARSET = utf8mb4
