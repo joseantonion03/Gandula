@@ -1,0 +1,23 @@
+{
+    "name":"jose/mvc",
+    "require":{
+        "php":">= 7.0",
+        "firebase/php-jwt": "^6.1",
+        "cboden/ratchet": "^0.4.4"
+    },
+    "authors": [
+        {
+            "name":"José Antonio",
+            "email":"ja2915588@gmail.com"
+        }
+    ],
+    "autoload":{
+        "psr-4":{
+            "App\\": "App/",
+            "MF\\": "vendor/MF/",
+            "MFconfig\\": "vendor/",
+            "WebSockets\\": "src"
+        }
+    }
+}
+

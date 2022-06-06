@@ -1,0 +1,62 @@
+<div id="container-conteudo" class="pr-4">
+    <h2 class="container-titulo">Minhas salas</h2>
+    <div class="container-acoes fx-betw-ctr">
+        <div class="container-acoes-left fx-center">
+            <div class="container-acoes-select">
+                <img class="container-img-filtrar" draggable="false" src="/assets/IMG/icones/icone-filtrar.svg" alt="icone filtrar">
+                <img class="container-img-bottom" draggable="false" src="/assets/IMG/icones/icone-bottom.svg" alt="icone bottom">
+                <select class="container-acoes-select-filtrar" name="filtrar" id="filtrar">
+                    <option value="" disabled selected>Filtrar</option>
+                    <option value="">Recentes</option>
+                    <option value="">Inicial</option>
+                </select>
+            </div>
+        </div>
+        <div class="container-acoes-right fx-center">
+            <div class="container-acoes-button">
+                <?php if ($this->view->ocupacao['ocupacao'] == "discente") { ?>
+                    <button onclick="openAlertaSala()" class="container-acoes-button-addmais"><img class="container-img-addmais" draggable="false" src="/assets/IMG/icones/icone-mais.svg" alt="icone mais"><span class="mr-3">Adicionar sala</span></button>
+                <?php } else { ?>
+                    <button onclick="openAlertaSala()" class="container-acoes-button-addmais"><img class="container-img-addmais" draggable="false" src="/assets/IMG/icones/icone-mais.svg" alt="icone mais"><span class="mr-3">Criar sala</span></button>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+
+    <?php if ($this->view->salas) { ?>
+
+        <div class="container-turmas fx-st-ctr">
+
+            <?php foreach ($this->view->salas as $sala) : ?>
+                <?php foreach ($sala as $salas) : ?>
+                    <div class="turmas-conteudo">
+                        <div class="turmas-conteudo-titulo">
+                            <h2 class="fx-st-ctr"><span class="turmas-conteudo-titulo-point" style="background-color: <?= $salas['cor']  ?>;"></span><?= $salas['nome']  ?></h2>
+                            <div class="turmas-conteudo-titulo-line" style="background-color: <?= $salas['cor']  ?>;"></div>
+                        </div>
+                        <div class="turmas-conteudo-square">
+                            <div class="turmas-square-corpo">
+                                <h3><?= $salas['total'] ?> <?= $salas['total'] <= 1 ? "Pessoa" : "Pessoas"; ?> presente nesta sala</h3>
+                                <p>Criada em 12/06/2022</p>
+                            </div>
+                            <button type="button" style="background-color: <?= $salas['cor']  ?>; border-color: <?= $salas['cor']  ?>" class="btn btn-primary"><a href="/sala?id=<?= $salas['id']  ?>">Visitar sala</a></button>
+                        </div>
+                    </div>
+            <?php endforeach;
+            endforeach; ?>
+        </div>
+
+    <?php } else { ?>
+
+        <div class="container-timeline">
+            <img class="timeline-conteudo-vazio-icone" draggable="false" src="/assets/IMG/imagem-vazio.svg" alt="Imagem representando que nenhum conteúdo foi encontrada">
+            <h2 class="timeline-conteudo-vazio-titulo"><?= ($this->view->ocupacao['nome']) ?>, você não está presente em nenhuma sala</h2>
+            <?php if ($this->view->ocupacao['ocupacao'] == "discente") { ?>
+                <button class="timeline-conteudo-vazio-button" onclick="openAlertaSala()"><i class="fas fa-plus"></i>ENTRAR EM UMA SALA</button>
+            <?php } else { ?>
+                <button class="timeline-conteudo-vazio-button" onclick="openAlertaSala()"><i class="fas fa-plus"></i>CRIAR UMA SALA</button>
+            <?php } ?>
+        </div>
+
+    <?php } ?>
+</div>

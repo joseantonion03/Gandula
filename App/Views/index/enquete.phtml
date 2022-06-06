@@ -1,0 +1,384 @@
+<div id="container-conteudo">
+
+    <?php
+    $salaLiberada = false;
+    foreach ($this->view->salas as $sala) :
+        foreach ($sala as $salas) :
+            $idSala = isset($_GET['id']) ? $_GET['id'] : false;
+            if ($idSala == $salas['id']) {
+
+                $codigoSala = $salas['codigo'];
+                $nomeSala = $salas['nome'];
+                $idsala = $salas['id'];
+                $_SESSION['idTurmaPostagem'] = $salas['id'];
+                $salaLiberada = true;
+                break;
+            }
+        endforeach;
+    endforeach;
+    if ($salaLiberada) {
+    ?>
+        <div class="sala h-auto">
+            <div class="sala-conteudo">
+                <p><a class="text-decoration-none text-reset" href="/sala?id=<?= $_SESSION['idTurmaPostagem'] ?>"><i class="fa-solid fa-arrow-left"></i><span class="ml-1">Voltar</span></a></p>
+                <h2 class="container-titulo"><?= $nomeSala ?></h2>
+                <div class="container-acoes fx-betw-ctr mt-5">
+                    <div class="container-acoes-left fx-center">
+                        <h2>Formulário</h2>
+                    </div>
+                    <div class="container-acoes-right fx-center">
+                        <div class="container-acoes-button mr-3">
+                            <button class="container-acoes-button-addmais fx-center">
+                                <div class="container-acoes-button-copy fx-center" onclick="copiarCodigo()"><img class="container-img" draggable="false" src="/assets/IMG/icones/icone-copy.svg" alt="icone mais"></div><input type="text" class="ml-2 mr-2" id="codigo" readonly value="<?= $codigoSala ?>">
+                            </button>
+                        </div>
+                        <div class="container-acoes-button">
+                            <button class="container-acoes-button-addmais fx-center">
+                                <a href="/membro?id=<?= $idSala ?>">
+                                    <img class="container-img-addmais" draggable="false" src="/assets/IMG/icones/icone-person.svg" alt="icone mais"><span class="mr-3">Membros</span>
+                                </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-conteudo-form mt-5 mb-5">
+                    <?php if ($this->view->ocupacao['ocupacao'] == "docente") { ?>
+                        <div class="container-enquete-diretorio mb-4 fx-st-ctr">
+                            <button type="button" data-id="0" class="btn active">Criar</button>
+                            <button type="button" data-id="1" class="btn">Resultado</button>
+                        </div>
+                        <div class="container-enquete active">
+                            <form class="container-enquete-form" method="post" action="/app/enquete/criar">
+                                <input type="hidden" name="opcao" id="opcao">
+                                <fieldset>
+                                    <legend>Titulo</legend>
+                                    <input type="text" class="form-control" placeholder="Digite o titulo" name="titulo">
+                                </fieldset>
+
+                                <fieldset>
+                                    <legend>Data final</legend>
+                                    <input type="datetime-local" class="form-control" name="data_final">
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Descrição</legend>
+                                    <textarea name="descricao" class="form-control" placeholder="Digite sua descrição"></textarea>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Opções</legend>
+                                    <input type="hidden" name="opcoes">
+                                    <div class="container-enquete-form-opcoes-fieldset fx-center">
+                                        <input type="text" name="valorop" class="form-control" id="valor__opcao" placeholder="Digite o texto da opção">
+                                        <button type="button" id="valor__opcao__btn" class="btn fx-center"><i class="fas fa-plus"></i><span>Adicionar</span></button>
+                                    </div>
+                                    <div class="container-enquete-form-opcoes mt-3">
+                                        <div id="content-body-opcao" class="enquete-button fx-betw-st">
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <button type="submit" class="btn">Enviar</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                        <div class="container-enquete bg-transparent px-0 py-0">
+                            <?php
+                            $countEnquete = 0;
+                            if (count($this->view->enquenteGrafico) > 0) {
+                                foreach ($this->view->enquenteGrafico as $enquenteGrafico) :
+                            ?>
+                                    <div class="enquete-resultado mb-4">
+                                        <h2><?= $enquenteGrafico['titulo'] ?></h2>
+                                        <p class="py-0">Enquete criada em <?= date('d', strtotime($enquenteGrafico['data_inicial'])) ?> do <?= date('m', strtotime($enquenteGrafico['data_inicial'])) ?> de <?= date('Y', strtotime($enquenteGrafico['data_inicial'])) ?></p>
+                                        <canvas id="myChart-<?= $countEnquete ?>" class="myChart-<?= $countEnquete ?>">Seu navegador não suporta o elemento de tela.</canvas>
+                                        <button type="button" data-id="<?= $countEnquete ?>" class="btn__enquete__show btn btn-primary mt-3">Usuários contribuentes</button>
+                                        <div class="enquete-resultado-usuarios">
+                                            <h3 class="py-3">Pessoas que responderam a enquete</h3>
+                                            <?php
+
+
+                                            foreach ($this->view->enquenteGraficoPerguntas as $enquetePerguntas) {
+                                                $countRespostaQuestion = 0;
+                                                if ($enquenteGrafico['id'] == $enquetePerguntas['idEnquete']) {
+                                                    $arrayLabelsTransform = $enquetePerguntas['pergunta'];
+
+                                                    foreach ($this->view->enquenteGraficoRespostas as $enqueteRespostas) {
+                                                        if ($enquetePerguntas['id'] == $enqueteRespostas['idEnqueteResposta']) {
+                                                            $countRespostaQuestion++;
+                                                            $curl = curl_init();
+                                                            curl_setopt_array($curl, [
+                                                                CURLOPT_URL => "http://localhost/app/enquete/usuarios?id=" . $enqueteRespostas['id'],
+                                                                CURLOPT_CUSTOMREQUEST => 'GET',
+                                                                CURLOPT_RETURNTRANSFER => true
+                                                            ]);
+
+                                                            $jsonResponse = curl_exec($curl);
+                                                            //$jsonResponse = json_decode($jsonResponse);
+                                                            $jsonResponse = json_decode($jsonResponse);
+                                                            $jsonResponse = $jsonResponse[0][0];
+                                                            $fotoPerfilUsuario = $jsonResponse->foto == "perfil.webp" ? "/assets/IMG/PERFIL/perfil.webp" : $jsonResponse->foto;
+                                                            echo '<div class="enquete-resultado-usuarios-content btn btn-light my-2 fx-st-ctr">
+                                                                <div class="enquete-resultado-usuarios-foto fx-center">
+                                                                    <img src=' . $fotoPerfilUsuario . ' alt="Foto de perfil">
+                                                                </div>
+                                                                <div class="enquete-resultado-usuarios-nome fx-st-ctr">
+                                                                    <p class="py-0">' . $jsonResponse->nome . '</p>
+                                                                </div>
+                                                            </div>';
+                                                        }
+                                                    }
+                                                }
+                                            }
+
+
+
+
+                                            ?>
+                                        </div>
+                                    </div>
+                                <?php
+                                    $countEnquete++;
+                                endforeach;
+                            } else {
+                                ?>
+                                <div class="enquete-resultado mb-4">
+                                    <p class="py-0">Você ainda não criou nenhuma enquete até o momento.</p>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
+                    <?php } else { ?>
+                        <div class="container-enquete d-block">
+                            <h2><?= $this->view->enquente[0]['titulo'] ?></h2>
+                            <p><?= $this->view->enquente[0]['texto'] ?></p>
+                            <form action="app/enquete/votos" method="post">
+                                <input type="hidden" value="0" id="opcao_resposta" name="opcao_resposta">
+                                <div class="enquete-button fx-betw-st">
+                                    <?php foreach ($this->view->enquentePerguntas as $enquentePerguntas) : ?>
+                                        <button type="button" data-id="<?= $enquentePerguntas['id'] ?>" class="btn__enquete btn__enquete__<?= $enquentePerguntas['id'] ?> fx-st-ctr">
+                                            <div class="fx-center">
+                                                <input type="radio" data-id="<?= $enquentePerguntas['id'] ?>" name="enquete" value="ee">
+                                                <span data-id="<?= $enquentePerguntas['id'] ?>"><?= $enquentePerguntas['pergunta'] ?></span>
+                                            </div>
+                                        </button>
+                                    <?php endforeach; ?>
+                                </div>
+                                <div class="enquete-submit fx-betw-st">
+                                    <a href="javascript:history.back()">Cancelar</a>
+                                    <button type="submit">Enviar</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    <?php } ?>
+                </div>
+            </div>
+
+
+            <div class="sala-informacoes">
+                <button class="sala-informacoes-toggle">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <div class="informacoes-content">
+                    <div class="calendar mb-4">
+                        <div class="calendar-header">
+                            <span class="month-picker" id="month-picker">Janeiro</span>
+                            <div class="year-picker">
+                                <span class="year-change" id="prev-year">
+                                    <pre><</pre>
+                                </span>
+                                <span id="year"><?= date('Y'); ?></span>
+                                <span class="year-change" id="next-year">
+                                    <pre>></pre>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="calendar-body">
+                            <div class="calendar-week-day">
+                                <div>Dom</div>
+                                <div>Seg</div>
+                                <div>Ter</div>
+                                <div>Qua</div>
+                                <div>Qui</div>
+                                <div>Sex</div>
+                                <div>Sab</div>
+                            </div>
+                            <div class="calendar-days"></div>
+                        </div>
+                        <div class="month-list"></div>
+                    </div>
+                    <div class="forms mt-4">
+                        <h2 style="border-bottom: 3px solid <?= $salas['cor'] ?>;">Formulário</h2>
+                        <?php if (count($this->view->viewEnquete) > 0) {
+                            function getHorasAtrasEnquete($horaAtual, $horaBase)
+                            {
+                                $horaAtual_dia = date('d', strtotime($horaAtual));
+                                $horaAtual_mes = date('m', strtotime($horaAtual));
+                                $horaAtual_ano = date('Y', strtotime($horaAtual));
+                                $horaAtual_hora = date('H', strtotime($horaAtual));
+                                $horaAtual_minuto = date('i', strtotime($horaAtual));
+                                $horaAtual_segundo = date('s', strtotime($horaAtual));
+                                $horaBase_dia = date('d', strtotime($horaBase));
+                                $horaBase_mes = date('m', strtotime($horaBase));
+                                $horaBase_ano = date('Y', strtotime($horaBase));
+                                $horaBase_hora = date('H', strtotime($horaBase));
+                                $horaBase_minuto = date('i', strtotime($horaBase));
+                                $horaBase_segundo = date('s', strtotime($horaBase));
+
+                                if(($horaAtual_ano - $horaBase_ano) > 0){
+                                    return ($horaAtual_ano - $horaBase_ano). 'ano atrás';
+                                }else if(($horaAtual_mes - $horaBase_mes) > 0){
+                                    if(($horaAtual_mes - $horaBase_mes) == 1){
+                                        return ($horaAtual_mes - $horaBase_mes). ' mês atrás';
+                                    }else{
+                                        return ($horaAtual_mes - $horaBase_mes). ' meses atrás';
+                                    }
+                                }else if(($horaAtual_dia - $horaBase_dia) > 0){
+                                    if(($horaAtual_dia - $horaBase_dia) == 1){
+                                        return ($horaAtual_dia - $horaBase_dia). ' dia atrás';
+                                    }else{
+                                        return ($horaAtual_dia - $horaBase_dia). ' dias atrás';
+                                    }
+                                }else if(($horaAtual_hora - $horaBase_hora) > 0){
+                                    if(($horaAtual_hora - $horaBase_hora) == 1){
+                                        return ($horaAtual_hora - $horaBase_hora). ' hora atrás';
+                                    }else{
+                                        return ($horaAtual_hora - $horaBase_hora). ' horas atrás';
+                                    }
+                                }else if(($horaAtual_minuto - $horaBase_minuto) > 0){
+                                    if(($horaAtual_minuto - $horaBase_minuto) == 1){
+                                        return ($horaAtual_minuto - $horaBase_minuto). ' minuto atrás';
+                                    }else{
+                                        return ($horaAtual_minuto - $horaBase_minuto). ' minutos atrás';
+                                    }
+                                }else{
+                                    return ($horaAtual_segundo - $horaBase_segundo). ' segundos atrás';
+                                }                           
+                            }
+                            function getHorasRestamEnquete($horaAtual, $horaBase)
+                            {
+                                $horaAtual_dia = date('d', strtotime($horaAtual));
+                                $horaAtual_mes = date('m', strtotime($horaAtual));
+                                $horaAtual_ano = date('Y', strtotime($horaAtual));
+                                $horaAtual_hora = date('H', strtotime($horaAtual));
+                                $horaAtual_minuto = date('i', strtotime($horaAtual));
+                                $horaAtual_segundo = date('s', strtotime($horaAtual));
+                                $horaBase_dia = date('d', strtotime($horaBase));
+                                $horaBase_mes = date('m', strtotime($horaBase));
+                                $horaBase_ano = date('Y', strtotime($horaBase));
+                                $horaBase_hora = date('H', strtotime($horaBase));
+                                $horaBase_minuto = date('i', strtotime($horaBase));
+                                $horaBase_segundo = date('s', strtotime($horaBase));
+
+                                if(($horaAtual_ano - $horaBase_ano) > 0){
+                                    return 'Restam '. ($horaAtual_ano - $horaBase_ano). ' ano';
+                                }else if(($horaAtual_mes - $horaBase_mes) > 0){
+                                    if(($horaAtual_mes - $horaBase_mes) == 1){
+                                        return ($horaAtual_mes - $horaBase_mes). ' mês atrás';
+                                    }else{
+                                        return ($horaAtual_mes - $horaBase_mes). ' meses atrás';
+                                    }
+                                }else if(($horaAtual_dia - $horaBase_dia) > 0){
+                                    if(($horaBase_dia - $horaAtual_dia) == 1){
+                                        return ($horaBase_dia - $horaAtual_dia). ' dia atrás';
+                                    }else{
+                                        return ($horaBase_dia - $horaAtual_dia). ' dias atrás';
+                                    }
+                                }else if(($horaBase_hora - $horaAtual_hora) > 0){
+                                    if(($horaAtual_hora - $horaBase_hora) == 1){
+                                        return ($horaAtual_hora - $horaBase_hora). ' hora atrás';
+                                    }else{
+                                        return ($horaAtual_hora - $horaBase_hora). ' horas atrás';
+                                    }
+                                }else if(($horaAtual_minuto - $horaBase_minuto) > 0){
+                                    if(($horaAtual_minuto - $horaBase_minuto) == 1){
+                                        return ($horaAtual_minuto - $horaBase_minuto). ' minuto atrás';
+                                    }else{
+                                        return ($horaAtual_minuto - $horaBase_minuto). ' minutos atrás';
+                                    }
+                                }else{
+                                    return ($horaAtual_segundo - $horaBase_segundo). ' segundos atrás';
+                                }                           
+                            }
+                            foreach ($this->view->viewEnquete as $viewEnquete) {
+                                $dataHoje = str_replace("/", "-", $this->view->data->format('Y/m/d H:i:s'));
+                                $data_inicial = $viewEnquete['data_inicial'];
+                                $data_final = $viewEnquete['data_final'];
+                                echo "Hoje: ". $data_final . '<br>';
+                                echo "Final: ". $data_final . '<br>';
+                                echo "Inicial: ". $data_inicial . '<br>';
+                                echo "<pre>";
+                                print_r($viewEnquete);
+                                echo $this->view->viewEnqueteGet;
+                                echo "</pre>";
+
+                        ?>
+                                <a href="/enquete?id=<?= $idsala ?>&id_enquete=<?= $viewEnquete['id'] ?>" class="forms-content text-break mt-3 btn-light btn">
+                                    <p class="text-break"><?= $viewEnquete['titulo'] ?></p>
+                                    <div class="forms-time">
+                                        <span class="forms-time-span-1"><?= getHorasAtrasEnquete($dataHoje, $data_inicial); ?></span>
+                                        <span class="forms-time-span-2"><?= getHorasRestamEnquete($dataHoje, $data_final); ?></span>
+                                    </div>
+                                </a>
+                        <?php
+                            }
+                        } else {
+                            echo '<p class="text-secondary">Nenhuma enquete foi disponibilizada até o momento</p>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <?php } else {  ?>
+
+        <h2 class="container-titulo">Tivemos um problema</h2>
+        <p class="container-paragrafo mt-3">
+            <?=
+            $this->view->ocupacao['ocupacao'] == "discente" ?
+                "Não conseguimos encontrar nenhuma sala com as informações que você nos informou. Faça parte de uma turma, insira o código de convite logo abaixo:" :
+                "Não conseguimos encontrar nenhuma sala com as informações que você nos informou. Crie sua turma agora mesmo, insira as informações básicas logo abaixo:";
+            ?>
+
+        </p>
+        <div class="container-formulario mt-5">
+            <?php if ($this->view->ocupacao['ocupacao'] == "discente") { ?>
+                <div id="adicionarsala-problema">
+                    <div class="adicionarsala-conteudo addAndCreatesala-conteudo" style="padding: 30px 0;">
+                        <h3>Entrar na sala</h3>
+                        <form action="/app/turma/entrar" method="post">
+                            <input type="text" name="adicionarsalaCodigoTurma" placeholder="Código da turma" id="adicionarsalaCodigoTurma">
+                            <div class="adicionarsala-codigo fx-center">
+                                <input type="color" name="adicionarsalaColor" value="#3AA76D" id="adicionarsalaColor">
+                                <input type="text" placeholder="Cor da turma" value="#3AA76D" name="adicionarsalaCodigo" id="adicionarsalaCodigo">
+                            </div>
+                            <div class="adicionarsala-btn fx-st-ctr">
+                                <button type="button" id="adicionarsala-btn-cancelar" class="btn btn-light" style="display: none;">Cancelar</button>
+                                <button type="submit" id="adicionarsala-btn-entrar" class="btn btn-success" style="margin-left: 0;">Entrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <?php } else { ?>
+                <div id="adicionarsala-problema">
+                    <div class="criarsala-conteudo addAndCreatesala-conteudo" style="padding: 30px 0;">
+                        <h3>Criar sala</h3>
+                        <form action="/app/turma/criar" method="post">
+                            <input type="text" name="criarsalaCodigoTurma" placeholder="Nome da turma" id="criarsalaCodigoTurma">
+                            <div class="criarsala-codigo fx-center">
+                                <input type="color" name="criarsalaColor" value="#3AA76D" id="criarsalaColor">
+                                <input type="text" placeholder="Código da turma" value="#3AA76D" name="criarsalaCodigo" id="criarsalaCodigo">
+                            </div>
+                            <div class="criarsala-btn fx-st-ctr">
+                                <button type="button" id="criarsala-btn-cancelar" class="btn btn-light" style="display: none;">Cancelar</button>
+                                <button type="submit" id="criarsala-btn-criar" class="btn btn-success" style="margin-left: 0;">Criar sala</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+
+    <?php }  ?>
+</div>

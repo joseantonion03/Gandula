@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  list-style: none;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+}
+
+html,
+body {
+  height: 100vh;
+  background-color: #F8F8F8;
+}
+
+img {
+  user-select: none;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+}
+
+button {
+  cursor: pointer;
+  user-select: none;
+  border: 0;
+}
+
+.in-fx-center {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.in-fx-ctr-st {
+  display: inline-flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.fx-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fx-betw-st {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.fx-st-ctr {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.fx-st-end {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.fx-end-ctr {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.fx-ctr-st {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.fx-betw-ctr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.fx-evy-ctr {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.fx-arud-ctr {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}

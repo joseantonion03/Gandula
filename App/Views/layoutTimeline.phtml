@@ -1,0 +1,329 @@
+<?php
+$salaLiberada = false;
+
+if (count($this->view->salas) > 0) {
+    foreach ($this->view->salas as $sala) :
+        foreach ($sala as $salas) :
+            $idSala = isset($_GET['id']) ? $_GET['id'] : false;
+            if ($idSala == $salas['id']) {
+                $codigoSala = $salas['codigo'];
+                $nomeSala = $salas['nome'];
+                $idsala = $salas['id'];
+                $_SESSION['idTurmaPostagem'] = $salas['id'];
+                $salaLiberada = true;
+                break;
+            }
+        endforeach;
+    endforeach;
+}
+
+?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>Gandula - <?= $this->view->ocupacao['nome'] ?></title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="shortcut icon" href="/assets/IMG/icon-favicon.png" type="image/x-icon">
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.min.css'>
+
+    <?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/ui/trumbowyg.min.css" integrity="sha512-nwpMzLYxfwDnu68Rt9PqLqgVtHkIJxEPrlu3PfTfLQKVgBAlTKDmim1JvCGNyNRtyvCx1nNIVBfYm8UZotWd4Q==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-xpR3G7LZbpAnoUgES2Xu2Z/mK8NwejLjJpNHQtmdU36yGP2AS5kgpflPwv6vEurEeruDcghOtHkWNsOkwVx2ig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/giphy/ui/trumbowyg.giphy.min.css" integrity="sha512-XtXSCsMCGIY7o4dasaT3nwKT3VPbYa+BMqBHxbThLEheafPGri4XDyiJiZAzri9vKSLb0UsxZHtXM9KCoH/hKw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <?php endif; ?>
+
+    <link href='/assets/CSS/core/main.min.css' rel='stylesheet' />
+    <link href='/assets/CSS/daygrid/main.min.css' rel='stylesheet' />
+    <link href='/assets/CSS/mensagem.min.css' rel='stylesheet' />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css">
+    <link rel="stylesheet" type="text/css" href="/assets/CSS/calendar.min.css?ver=1.0.0">
+    <link rel="stylesheet" type="text/css" href="/assets/CSS/timeline.min.css?ver=1.0.0">
+
+
+</head>
+
+<body class="light">
+    <section class="container-website fx-ctr-st">
+        <section id="barralateral" class="barralateral">
+            <div class="barralateral-logo fx-st-ctr">
+                <div class="barralateral-close-menu">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </div>
+                <img draggable="false" src="/assets/IMG/logo.svg" alt="logo gandula">
+            </div>
+            <div class="barralateral-diretorio">
+                <ul>
+                    <li class="li-link <?= $_SERVER['REDIRECT_URL'] == '/timeline' ? 'li-check' : '' ?>"><a href="/timeline"><img draggable="false" src="/assets/IMG/icones/icone-home.svg" alt="icone home"><span>Home</span></a></li>
+                    <li class="li-link <?= $_SERVER['REDIRECT_URL'] == '/perfil' ? 'li-check' : '' ?>"><a href="/perfil"><img draggable="false" src="/assets/IMG/icones/icone-configuracao.svg" alt="icone configuracao"><span>Perfil</span></a></li>
+                    <?php if ($_SERVER['REDIRECT_URL'] != "/timeline" and $_SERVER['REDIRECT_URL'] != "/perfil") : ?>
+                        <li class="li-link <?= $_SERVER['REDIRECT_URL'] == '/mensagem' ? 'li-check' : '' ?>"><a href="/mensagem?id=<?= $_SESSION['idTurmaPostagem'] ?>"><img draggable="false" src="/assets/IMG/icones/icone-mensagem.svg" alt="icone mensagem"><span>Mensagem</span></a></li>
+                        <li class="li-link <?= $_SERVER['REDIRECT_URL'] == '/calendario' ? 'li-check' : '' ?>"><a href="/calendario?id=<?= $_SESSION['idTurmaPostagem'] ?>"><img draggable="false" src="/assets/IMG/icones/icone-calendario.svg" alt="icone calendario"><span>Calendário</span></a></li>
+                        <?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+                            <li class="li-link <?= $_SERVER['REDIRECT_URL'] == '/enquete' ? 'li-check' : '' ?>"><a href="/enquete?id=<?= $_SESSION['idTurmaPostagem'] ?>"><img draggable="false" src="/assets/IMG/icones/icone-enquete.svg" alt="icone enquete"><span>Enquete</span></a></li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </ul>
+            </div>
+            <div class="barralateral-sala">
+                <div class="barralateral-sala-titulo fx-betw-ctr">
+                    <p>SALAS</p>
+                    <div class="barralateral-sala-titulo-addmais fx-center" onclick="openAlertaSala()">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                <?php
+                if ($this->view->salas) {
+                    foreach ($this->view->salas as $sala) :
+                        foreach ($sala as $salas) : ?>
+                            <div class="barralateral-sala-criadas fx-st-ctr">
+                                <p><a href="<?= $_SERVER['REDIRECT_URL'] == "/timeline" ? "/sala" : $_SERVER['REDIRECT_URL'] ?>?id=<?= $salas['id'] ?>"><span style="background-color:  <?= $salas['cor'] ?>;" class="barralateral-circle-icon"></span> <?= $salas['nome'] ?></a></p>
+                            </div>
+                <?php endforeach;
+                    endforeach;
+                }
+                ?>
+            </div>
+        </section>
+        <main>
+            <header>
+                <div class="header-logo fx-st-ctr">
+                    <div class="header-open-menu">
+                        <i class="fa fa-bars" aria-hidden="true"></i>
+                    </div>
+                    <img draggable="false" src="/assets/IMG/logo.svg" alt="logo gandula">
+                </div>
+                <div class="header-formulario-search">
+                    <form action="#" method="get">
+                        <input type="text" name="search" id="search" placeholder="Pesquisar aqui">
+                        <img draggable="false" src="/assets/IMG/icones/icone-search.svg" alt="icone de busca">
+                    </form>
+                </div>
+                <div class="header-configuracoes fx-center">
+                    <div class="header-configuracoes-icones fx-center">
+                        <label for="header-message">
+                            <img draggable="false" src="/assets/IMG/icones/icone-mensagem.svg" alt="icone de mensagem">
+                        </label>
+                        <label for="header-message">
+                            <img draggable="false" src="/assets/IMG/icones/icone-alerta.svg" alt="icone de alerta">
+                        </label>
+                    </div>
+                    <div class="header-configuracoes-nome fx-center">
+                        <?php
+                        $nome = explode(" ", $this->view->ocupacao['nome']);
+                        $nome[1] = isset($nome[1]) ? $nome[1] : "";
+                        $nome = $nome[0] . " " . $nome[1]; ?>
+                        <p class="header-nome"><?= $nome ?></p>
+                        <p class="header-ocupacao"><?= ucwords($this->view->ocupacao['ocupacao']) ?>, Brasil</p>
+                    </div>
+                    <div class="header-configuracoes-setting fx-center">
+                        <label for="header-message" class="header-setting">
+                            <img draggable="false" src="/assets/IMG/icones/icone-setting.svg" alt="icone de configuração">
+                            <div class="header-setting-popup">
+                                <ul>
+                                    <li><a href="/perfil"><i class="fas fa-sign-out-alt"></i>Configuração</a></li>
+                                    <li><a href="/app/auth/sair"><i class="fas fa-sign-out-alt"></i>Sair</a></li>
+                                </ul>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </header>
+            <section id="container">
+                <?= $this->content() ?>
+            </section>
+        </main>
+    </section>
+    <?php if ($this->view->ocupacao['ocupacao'] == "discente") { ?>
+        <section id="adicionarsala" class="adicionarsala fx-center">
+            <div class="adicionarsala-conteudo">
+                <h3>Entrar na sala</h3>
+                <form action="/app/turma/entrar" method="post">
+                    <input type="text" name="adicionarsalaCodigoTurma" placeholder="Código da turma" id="adicionarsalaCodigoTurma">
+                    <div class="adicionarsala-codigo fx-center">
+                        <input type="color" name="adicionarsalaColor" value="#3AA76D" id="adicionarsalaColor">
+                        <input type="text" placeholder="Cor da turma" name="adicionarsalaCodigo" id="adicionarsalaCodigo">
+                    </div>
+                    <div class="adicionarsala-btn fx-st-ctr">
+                        <button type="button" id="adicionarsala-btn-cancelar" class="btn btn-light">Cancelar</button>
+                        <button type="submit" id="adicionarsala-btn-entrar" class="btn btn-success">Entrar</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    <?php } else { ?>
+        <section id="criarsala" class="criarsala fx-center">
+            <div class="criarsala-conteudo">
+                <h3>Criar sala</h3>
+                <form action="/app/turma/criar" method="post">
+                    <input type="text" name="criarsalaCodigoTurma" placeholder="Nome da turma" id="criarsalaCodigoTurma">
+                    <div class="criarsala-codigo fx-center">
+                        <input type="color" name="criarsalaColor" value="#3AA76D" id="criarsalaColor">
+                        <input type="text" placeholder="Código da turma" value="#3AA76D" name="criarsalaCodigo" id="criarsalaCodigo">
+                    </div>
+                    <div class="criarsala-btn fx-st-ctr">
+                        <button type="button" id="criarsala-btn-cancelar" class="btn btn-light">Cancelar</button>
+                        <button type="submit" id="criarsala-btn-criar" class="btn btn-success">Criar sala</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    <?php } ?>
+    <section id="copy-codigo" class="copy-codigo fx-st-ctr">
+        <div class="copy-texto-conteudo fx-center">
+            <div class="copy-texto-conteudo-img">
+                <img src="/assets/IMG/icones/icons8-copy.gif" alt="copiar texto">
+            </div>
+            <div class="copy-texto-conteudo-texto fx-st-ctr">
+                <p>Código copiado com sucesso</p>
+            </div>
+        </div>
+    </section>
+    <div class="modal-bg-active"></div>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <?php if ($_SERVER['REDIRECT_URL'] == "/mensagem") { ?>
+        <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <?php } else { ?>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <?php } ?>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!--<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/trumbowyg.min.js" integrity="sha512-t4CFex/T+ioTF5y0QZnCY9r5fkE8bMf9uoNH2HNSwsiTaMQMO0C9KbKPMvwWNdVaEO51nDL3pAzg4ydjWXaqbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/langs/pt_br.min.js" integrity="sha512-iJ7snbcZfiZbui/K17AYkBONvjRS1F3V/Y/Ph7n84hptyJUDeXO6rCUX05N5yeY53EUyDotiLn+nK4GXoKXyug==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/emoji/trumbowyg.emoji.min.js" integrity="sha512-PPEK09bmt7tQg/qdNokvbckNVB4EqXTu+qi4X/j9XoFag6YspjU5xO/FXXCEjBxo1+Z41oOFvIyz5QkjSuTNsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/fontsize/trumbowyg.fontsize.min.js" integrity="sha512-eYBhHjpFi6wk8wWyuXYYu54CRcXA3bCFSkcrco4SR1nGtGSedgAXbMbm3l5X4IVEWD8U7Pur9yNjzYu8n4aIMA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/fontfamily/trumbowyg.fontfamily.min.js" integrity="sha512-ha/jXUX4sZMHEvpHLtYOIvMDK8/a8ncRhAPSmQVUx/to+04w+zUBWWZHaPQMPt6qjx94V/lbE9ZEsTsb7F+sTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/giphy/trumbowyg.giphy.min.js" integrity="sha512-1auqiu0UbFhtGEDnCosTHjToHy9oouydu0tlLmMMVCpMSoBiZlmOEXXVmsaIfN05Tlb+w60XBz8HR7Lh7dWAYQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <?php endif; ?>
+
+    <?php if ($_SERVER['REDIRECT_URL'] == "/calendario") : ?>
+        <script src='/assets/JS/core/main.min.js'></script>
+        <script src='/assets/JS/interaction/main.min.js'></script>
+        <script src='/assets/JS/daygrid/main.min.js'></script>
+        <script src='/assets/JS/core/locales/pt-br.js'></script>
+    <?php endif; ?>
+    <?php if ($_SERVER['REDIRECT_URL'] != "/timeline" and $_SERVER['REDIRECT_URL'] != "/perfil" and $_SERVER['REDIRECT_URL'] != "/calendario" and $_SERVER['REDIRECT_URL'] != "/mensagem") : ?>
+        <script src="/assets/JS/calendar.js?ver=1.0.0"></script>
+    <?php endif; ?>
+    <script src="/assets/JS/timeline.js?ver=1.0.0"></script>
+    <script src="/assets/JS/timeline_<?= $this->view->ocupacao['ocupacao'] ?>.js?ver=1.0.0" type="text/babel"></script>
+    <?php
+
+    switch ($_SERVER['REDIRECT_URL']) {
+        case '/calendario':
+            echo '<script src="/assets/js/calendario.js?ver=1.0.0"></script>';
+            if ($this->view->ocupacao['ocupacao'] == "docente") {
+                echo '<script src="/assets/JS/calendario_docente.js?ver=1.0.0" type="text/babel"></script>';
+            }
+            break;
+        case '/enquete':
+
+            echo '<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js"></script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/locales-all.min.js"></script>';
+            echo '<script src="/assets/JS/enquete_' . $this->view->ocupacao['ocupacao'] . '.js?ver=1.0.0"></script>';
+            echo '<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>';
+            if ($this->view->ocupacao['ocupacao'] == "docente") {
+                echo '<script src="/assets/JS/enquete_graficos.js?ver=1.0.0" type="text/babel"></script>';
+    ?>
+                <?php
+                $countEnqueteLayout = 0;
+                if (count($this->view->enquenteGrafico) > 0) {
+                    foreach ($this->view->enquenteGrafico as $enquenteGrafico) :
+                ?>
+
+
+                        <script>
+                            const ctx_<?= $countEnqueteLayout ?> = document.querySelector('.myChart-<?= $countEnqueteLayout ?>').getContext('2d');
+                            const myChart_<?= $countEnqueteLayout ?> = new Chart(ctx_<?= $countEnqueteLayout ?>, {
+                                type: 'bar',
+                                data: {
+
+                                    <?php
+                                    $arrayLabels = '';
+                                    $arrayData = '';
+                                    foreach ($this->view->enquenteGraficoPerguntas as $enquetePerguntas) {
+                                        $countRespostaQuestion = 0;
+                                        if ($enquenteGrafico['id'] == $enquetePerguntas['idEnquete']) {
+                                            $arrayLabelsTransform = $enquetePerguntas['pergunta'];
+                                            $arrayLabels .= "'{$arrayLabelsTransform}',";
+
+                                            foreach ($this->view->enquenteGraficoRespostas as $enqueteRespostas) {
+                                                if ($enquetePerguntas['id'] == $enqueteRespostas['idEnqueteResposta']) {
+                                                    $countRespostaQuestion++;
+                                                }
+                                            }
+                                            $arrayDataTransform = $countRespostaQuestion++;
+                                            $arrayData .= "'{$arrayDataTransform}',";
+                                        }
+                                    }
+                                    echo 'labels: [' . $arrayLabels . '],';
+                                    ?>
+
+                                    datasets: [{
+                                        label: 'Total de votos',
+                                        <?php echo 'data: [' . $arrayData . '],'; ?>
+                                        backgroundColor: [
+                                            'rgba(255, 99, 132, 0.2)',
+                                            'rgba(54, 162, 235, 0.2)',
+                                            'rgba(255, 206, 86, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                            'rgba(153, 102, 255, 0.2)',
+                                            'rgba(255, 159, 64, 0.2)'
+                                        ],
+                                        borderColor: [
+                                            'rgba(255, 99, 132, 1)',
+                                            'rgba(54, 162, 235, 1)',
+                                            'rgba(255, 206, 86, 1)',
+                                            'rgba(75, 192, 192, 1)',
+                                            'rgba(153, 102, 255, 1)',
+                                            'rgba(255, 159, 64, 1)'
+                                        ],
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    plugins: {
+                                        title: {
+                                            display: true,
+                                            text: 'Votos da enquete'
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
+                <?php
+                        $countEnqueteLayout++;
+                    endforeach;
+                }
+                ?>
+    <?php
+            }
+            break;
+        case '/perfil':
+            echo '<script src="https://js.upload.io/upload-js/v1"></script>';
+            echo '<script src="/assets/JS/perfil.js?ver=1.0.0"></script>';
+            break;
+        case '/mensagem':
+            echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>' . "\n\t";
+            echo '<script src="/assets/JS/mensagem.js?ver=1.0.0"></script>' . "\n\t";
+            break;
+    }
+    ?>
+</body>
+
+</html>

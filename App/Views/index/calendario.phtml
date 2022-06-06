@@ -1,0 +1,219 @@
+<div id="container-conteudo" class="pr-4">
+    <?php
+    $salaLiberada = false;
+    foreach ($this->view->salas as $sala) :
+        foreach ($sala as $salas) :
+            $idSala = isset($_GET['id']) ? $_GET['id'] : false;
+            if ($idSala == $salas['id']) {
+
+                $codigoSala = $salas['codigo'];
+                $nomeSala = $salas['nome'];
+                $_SESSION['idTurmaPostagem'] = $salas['id'];
+                $salaLiberada = true;
+                break;
+            }
+        endforeach;
+    endforeach;
+    if ($salaLiberada) {
+    ?>
+        <p><a class="text-decoration-none text-reset" href="/sala?id=<?= $_SESSION['idTurmaPostagem'] ?>"><i class="fa-solid fa-arrow-left"></i><span class="ml-1">Voltar</span></a></p>
+        <h2 class="container-titulo">Calendário</h2>
+        <div class="calendario">
+            <div id='calendar'></div>
+        </div>
+</div>
+<div class="modal fade" id="visualizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detalhes do Evento</h5>
+                <button type="button" class="close" data-model="visualizar" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" data-model="visualizar">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="visevent" style="display: block;">
+                    <dl class="row">
+                        <dt class="col-sm-3">ID do evento</dt>
+                        <dd class="col-sm-9" id="id"></dd>
+
+                        <dt class="col-sm-3">Título do evento</dt>
+                        <dd class="col-sm-9" id="title"></dd>
+
+                        <dt class="col-sm-3">Início do evento</dt>
+                        <dd class="col-sm-9" id="start"></dd>
+
+                        <dt class="col-sm-3">Fim do evento</dt>
+                        <dd class="col-sm-9" id="end"></dd>
+                    </dl>
+                    <?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+                        <button class="btn btn-warning btn-canc-vis">Editar</button>
+                    <?php endif; ?>
+                </div>
+                <?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+                    <div class="formedit" style="display: none;">
+                        <span id="msg-edit"></span>
+                        <form id="editevent" method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="id" id="id">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Título</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="title" class="form-control" id="title" placeholder="Título do evento">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Color</label>
+                                <div class="col-sm-10">
+                                    <select name="color" class="form-control" id="color">
+                                        <option value="">Selecione</option>
+                                        <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
+                                        <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
+                                        <option style="color:#FF4500;" value="#FF4500">Laranja</option>
+                                        <option style="color:#8B4513;" value="#8B4513">Marrom</option>
+                                        <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
+                                        <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
+                                        <option style="color:#A020F0;" value="#A020F0">Roxo</option>
+                                        <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
+                                        <option style="color:#228B22;" value="#228B22">Verde</option>
+                                        <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Início do evento</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="start" class="form-control" id="start" onkeypress="DataHora(event, this)">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Final do evento</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="end" class="form-control" id="end" onkeypress="DataHora(event, this)">
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-sm-10">
+                                    <button type="button" class="btn btn-primary btn-canc-edit">Cancelar</button>
+                                    <button type="submit" name="CadEvent" id="CadEvent" value="CadEvent" class="btn btn-success">Editar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+<?php if ($this->view->ocupacao['ocupacao'] == "docente") : ?>
+    <div class="modal fade" id="cadastrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Cadastrar Evento</h5>
+                    <button type="button" class="close" data-model="cadastrar" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" data-model="cadastrar">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <span id="msg-cad"></span>
+                    <form id="addevent" method="POST" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Título</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="title" class="form-control" id="title" placeholder="Título do evento">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Color</label>
+                            <div class="col-sm-10">
+                                <select name="color" class="form-control" id="color">
+                                    <option value="">Selecione</option>
+                                    <option style="color:#FFD700;" value="#FFD700">Amarelo</option>
+                                    <option style="color:#0071c5;" value="#0071c5">Azul Turquesa</option>
+                                    <option style="color:#FF4500;" value="#FF4500">Laranja</option>
+                                    <option style="color:#8B4513;" value="#8B4513">Marrom</option>
+                                    <option style="color:#1C1C1C;" value="#1C1C1C">Preto</option>
+                                    <option style="color:#436EEE;" value="#436EEE">Royal Blue</option>
+                                    <option style="color:#A020F0;" value="#A020F0">Roxo</option>
+                                    <option style="color:#40E0D0;" value="#40E0D0">Turquesa</option>
+                                    <option style="color:#228B22;" value="#228B22">Verde</option>
+                                    <option style="color:#8B0000;" value="#8B0000">Vermelho</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Início do evento</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="start" class="form-control" id="start" onkeypress="DataHora(event, this)">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Final do evento</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="end" class="form-control" id="end" onkeypress="DataHora(event, this)">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-sm-10">
+                                <button type="submit" name="CadEvent" id="CadEvent" value="CadEvent" class="btn btn-success">Cadastrar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+<?php } else {  ?>
+
+    <h2 class="container-titulo">Tivemos um problema</h2>
+    <p class="container-paragrafo mt-3">
+        <?=
+        $this->view->ocupacao['ocupacao'] == "discente" ?
+            "Não conseguimos encontrar nenhuma sala com as informações que você nos informou. Faça parte de uma turma, insira o código de convite logo abaixo:" :
+            "Não conseguimos encontrar nenhuma sala com as informações que você nos informou. Crie sua turma agora mesmo, insira as informações básicas logo abaixo:";
+        ?>
+
+    </p>
+    <div class="container-formulario mt-5">
+        <?php if ($this->view->ocupacao['ocupacao'] == "discente") { ?>
+            <div id="adicionarsala-problema">
+                <div class="adicionarsala-conteudo addAndCreatesala-conteudo" style="padding: 30px 0;">
+                    <h3>Entrar na sala</h3>
+                    <form action="/app/turma/entrar" method="post">
+                        <input type="text" name="adicionarsalaCodigoTurma" placeholder="Código da turma" id="adicionarsalaCodigoTurma">
+                        <div class="adicionarsala-codigo fx-center">
+                            <input type="color" name="adicionarsalaColor" value="#3AA76D" id="adicionarsalaColor">
+                            <input type="text" placeholder="Cor da turma" value="#3AA76D" name="adicionarsalaCodigo" id="adicionarsalaCodigo">
+                        </div>
+                        <div class="adicionarsala-btn fx-st-ctr">
+                            <button type="button" id="adicionarsala-btn-cancelar" class="btn btn-light" style="display: none;">Cancelar</button>
+                            <button type="submit" id="adicionarsala-btn-entrar" class="btn btn-success" style="margin-left: 0;">Entrar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <?php } else { ?>
+            <div id="adicionarsala-problema">
+                <div class="criarsala-conteudo addAndCreatesala-conteudo" style="padding: 30px 0;">
+                    <h3>Criar sala</h3>
+                    <form action="/app/turma/criar" method="post">
+                        <input type="text" name="criarsalaCodigoTurma" placeholder="Nome da turma" id="criarsalaCodigoTurma">
+                        <div class="criarsala-codigo fx-center">
+                            <input type="color" name="criarsalaColor" value="#3AA76D" id="criarsalaColor">
+                            <input type="text" placeholder="Código da turma" value="#3AA76D" name="criarsalaCodigo" id="criarsalaCodigo">
+                        </div>
+                        <div class="criarsala-btn fx-st-ctr">
+                            <button type="button" id="criarsala-btn-cancelar" class="btn btn-light" style="display: none;">Cancelar</button>
+                            <button type="submit" id="criarsala-btn-criar" class="btn btn-success" style="margin-left: 0;">Criar sala</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+
+<?php }  ?>

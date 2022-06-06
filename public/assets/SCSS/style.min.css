@@ -1,0 +1,539 @@
+@import url("./resetar.min.css");
+/* ---------------------------------------- LAYOUT - LOGIN USANDO O GOOGLE -------------------------------------------*/
+#customBtn {
+  background: #fafbfc;
+  color: #444;
+  width: 100%;
+  height: 50px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+#customBtn:hover {
+  cursor: pointer;
+}
+
+span.label {
+  font-family: serif;
+  font-weight: normal;
+}
+
+span.icon {
+  vertical-align: middle;
+  width: 50px;
+  height: 100%;
+  padding: 0.7rem;
+}
+
+span.icon img {
+  height: 25px;
+  width: 25px;
+}
+
+span.buttonText {
+  vertical-align: middle;
+  font-size: 1rem;
+  /* Use the Roboto font that is loaded in the <head> */
+  font-family: "Roboto", sans-serif;
+  color: #c1c7d0;
+}
+
+.form-row {
+  position: relative;
+  color: #a8a8b3;
+}
+
+.form-row .form-row-content {
+  width: 3rem;
+  height: 2px;
+  display: inline-flex;
+  background-color: #a8a8b3;
+  margin: 0 10px;
+}
+
+/* ---------------------------------------- FIM LAYOUT - LOGIN USANDO O GOOGLE -------------------------------------------*/
+.container-conteudo {
+  width: 100%;
+  height: 100vh;
+  max-width: initial;
+}
+
+.formulario,
+.bannerImagem {
+  height: 100%;
+  width: 50%;
+}
+
+.formulario form {
+  width: 80%;
+  max-width: 400px;
+}
+
+.formulario-logo {
+  padding: 40px 0;
+}
+
+.formulario-titulo h2 {
+  color: #323b4b;
+}
+
+.formulario-titulo p {
+  color: #8a94a6;
+}
+
+.formulario-icone {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 15px;
+}
+
+.formulario-icone i,
+.formulario-icone input {
+  color: #b0b7c3;
+  user-select: none;
+}
+
+.formulario-icone-password {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  cursor: pointer;
+}
+
+.formulario-icone-password i {
+  color: #b0b7c3;
+}
+
+#floatingPassword {
+  padding-right: 40px;
+}
+
+#floatingPassword::-ms-reveal {
+  display: none;
+}
+
+.formulario-input {
+  height: 50px;
+  user-select: none;
+}
+
+.formulario-input button {
+  height: 50px;
+  width: 100%;
+}
+
+.form-floating > label {
+  left: 35px;
+  color: #b0b7c3;
+  padding: 0.8rem 10px;
+}
+
+.form-floating > .form-control {
+  padding: 0 0 0 45px;
+  height: 100%;
+  width: 100%;
+}
+
+#resetarSenha {
+  text-decoration: none;
+  color: #7b61ff;
+}
+
+.form-cadastrarUsuarioBtn {
+  color: #696f79;
+  font-weight: 500;
+}
+
+.form-cadastrarUsuarioBtn label {
+  cursor: pointer;
+}
+
+.form-cadastrarUsuarioBtn span {
+  color: #1565d8;
+}
+
+.bannerImagem img {
+  width: 100%;
+  height: 100%;
+  object-position: top;
+}
+
+@media screen and (max-width: 700px) {
+  .formulario {
+    width: 100%;
+  }
+  .bannerImagem {
+    display: none;
+  }
+}
+
+#cadastro {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #00000086;
+}
+
+.cadastro-show {
+  display: flex !important;
+}
+
+.cadastro-container {
+  position: relative;
+  width: 1000px;
+  height: 600px;
+  background-color: #ffffff;
+  border-radius: 2.5px;
+}
+
+.btn-close-cadastro {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: transparent;
+  font-size: 1.3rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.cadastro-container-caminho,
+.cadastro-container-formulario {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.cadastro-container-caminho .owl-dots,
+.cadastro-container-formulario .owl-dots {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 15px;
+}
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////// */
+.cadastro-container-formulario {
+  /* Mark input boxes that gets an error on validation: */
+  /* Hide all steps by default: */
+  /* Make circles that indicate the steps of the form: */
+  /* Mark the steps that are finished and valid: */
+}
+
+.cadastro-container-formulario #regForm {
+  width: 100%;
+  height: 100%;
+  flex-wrap: wrap;
+}
+
+.cadastro-container-formulario input.invalid {
+  background-color: #ffdddd;
+}
+
+.cadastro-container-formulario .tab {
+  display: none;
+  width: 100%;
+}
+
+.cadastro-container-formulario .tab-btn {
+  width: 85%;
+  margin: auto;
+  margin-top: 1rem;
+}
+
+.cadastro-container-formulario button {
+  background-color: #835AFD;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cadastro-container-formulario button:hover {
+  opacity: 0.8;
+}
+
+.cadastro-container-formulario #prevBtn {
+  background-color: #bbbbbb;
+}
+
+.cadastro-container-formulario .step-position {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 15px;
+}
+
+.cadastro-container-formulario .step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.cadastro-container-formulario .step.active {
+  opacity: 1;
+}
+
+.cadastro-container-formulario .step.finish {
+  background-color: #04AA6D;
+}
+
+/* ///////////////////////////////////////////////////////////////////////////////////////////////// */
+.cadastro-container-caminho {
+  background-color: #422f7e;
+}
+
+.cadastro-container-conteudo {
+  width: 100%;
+}
+
+.cadastro-container-conteudo h2 {
+  color: #4d2b97;
+  margin-left: 7.5%;
+}
+
+.cadastro-container-conteudo .cadastro-paragrafo-finalizar {
+  color: #b0b7c3;
+  margin-left: 7.5%;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.cadastro-container-conteudo-marcacoes {
+  position: relative;
+  width: 85%;
+  padding: 10px;
+  border: 3px solid #f1f1f1;
+  border-radius: 8px;
+  user-select: none;
+  cursor: pointer;
+  margin: 10px 0;
+}
+
+.cadastro-container-conteudo-marcacoes .submit-cadastro-ocupacao {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.input-radio-checked {
+  border: 3px solid #6e41e2;
+  background-color: #e3daf9;
+}
+
+.cadastro-container-checkout {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.conteudo-marcacoes-option {
+  padding-right: 20px;
+  padding-left: 10px;
+}
+
+.conteudo-marcacoes-option input {
+  padding: 12.5px;
+  background-color: #e3daf9;
+  border-color: transparent;
+}
+
+.conteudo-marcacoes-option input:checked {
+  background-color: #6e41e2;
+}
+
+.conteudo-marcacoes-option input:checked[type="radio"] {
+  background-image: none;
+}
+
+.conteudo-marcacoes-texto {
+  color: #111111;
+}
+
+.btn-next,
+.btn-prev {
+  padding: 13px 56px;
+  margin-left: 7.5%;
+  margin-top: 0.5rem;
+  color: #ffffff;
+  background: #835afd;
+  border-radius: 8px;
+}
+
+.btn-next-pv {
+  margin-left: 0.5%;
+}
+
+.btn-prev {
+  background: transparent;
+  color: #6c757d;
+  font-weight: 700;
+  padding: 13px 30px;
+}
+
+.cadastro-container-informacoespessoais {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.cadastro-container-informacoespessoais fieldset {
+  width: 85%;
+}
+
+.cadastro-container-informacoespessoais fieldset legend {
+  color: #c0c0c0;
+  font-weight: 400;
+  font-size: 1.2rem;
+}
+
+.cadastro-container-informacoespessoais fieldset input {
+  width: 100%;
+  height: 55px;
+  border: 1px solid #dbdbdb;
+  border-radius: 2.5px;
+  padding: 5px 15px;
+}
+
+.cadastro-container-finalizar {
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.cadastro-container-finalizar img {
+  width: 85% !important;
+  margin: 30px 0;
+}
+
+.caminho-logo-gandula {
+  width: 100%;
+  height: 80px;
+  padding: 15px 0;
+  margin-top: 20px;
+}
+
+.caminho-logo-gandula img {
+  height: 100%;
+  margin-left: 7.5%;
+}
+
+.caminho-form {
+  width: 100%;
+  height: 400px;
+}
+
+.caminho-form-container {
+  width: 100%;
+  margin-left: 7.5%;
+  margin-top: 60px;
+}
+
+.caminho-form-container-icon {
+  width: 45px;
+  height: 45px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+  position: relative;
+}
+
+.caminho-icon-active {
+  background-color: #ffffff;
+}
+
+.caminho-icon-active .caminho-form-container-icon-modelo i {
+  color: #8055DA;
+  font-size: 1.5rem;
+}
+
+.caminho-icon-active .caminho-form-container-icon-modelo .fa-circle {
+  display: none;
+}
+
+.caminho-icon-active .caminho-form-container-icon-modelo .fa-check {
+  display: inline-flex;
+}
+
+.caminho-icon-analise {
+  background-color: #ffffff;
+}
+
+.caminho-icon-analise .caminho-form-container-icon-modelo i {
+  color: #8055DA;
+}
+
+.caminho-icon-analise .caminho-form-container-icon-modelo .fa-circle {
+  display: inline-flex;
+}
+
+.caminho-icon-analise .caminho-form-container-icon-modelo .fa-check {
+  display: none;
+}
+
+.caminho-form-container-icon-modelo i {
+  color: #ffffff;
+  font-size: .8rem;
+}
+
+.caminho-form-container-icon-modelo .fa-circle {
+  display: inline-flex;
+}
+
+.caminho-form-container-icon-modelo .fa-check {
+  display: none;
+}
+
+.caminho-icon-line::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -60px;
+  width: 3px;
+  height: 52px;
+  background-color: #ffffff;
+}
+
+.caminho-form-container-texto {
+  width: calc(100% - 60px);
+  flex-wrap: wrap;
+  padding-left: 1rem;
+}
+
+.caminho-form-container-texto h3,
+.caminho-form-container-texto p {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.caminho-form-container-texto h3 {
+  font-weight: 400;
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.caminho-form-container-texto p {
+  font-weight: 300;
+  font-size: 1rem;
+  color: #B0B7C3;
+}
+
+.form-erro {
+  display: none;
+}
+
+.form-erro-show {
+  display: block;
+}

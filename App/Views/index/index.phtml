@@ -1,0 +1,232 @@
+<main>
+  <section>
+    <div class="container-conteudo fx-center">
+      <div class="formulario fx-center">
+        <form action="/app/auth/login" method="post">
+          <div class="formulario-logo fx-center">
+            <img src="assets/IMG/logo.svg" draggable="false" alt="logo da gandula">
+          </div>
+          <div class="formulario-titulo">
+            <h2>Entrar</h2>
+            <p>bem-vindo de volta, você fez falta!</p>
+          </div>
+          <div class="formulario-dados">
+            <div class="form-floating mb-3 formulario-input">
+              <!-- In the callback, you would hide the gSignInWrapper element on a
+  successful sign in -->
+              <div id="gSignInWrapper">
+                <div id="customBtn" class="customGPlusSignIn fx-center">
+                  <div>
+                    <span class="icon">
+                      <img src="./assets/IMG/logo-google.png" alt="logo do google">
+                    </span>
+                    <span class="buttonText">Continuar com o google</span>
+                  </div>
+                </div>
+              </div>
+              <div id="name"></div>
+            </div>
+            <div class="form-floating mb-2 form-row fx-center formulario-input">
+              <p class="fx-center"><span class="form-row-content"></span> <span class="form-row-texto">ou entre com suas informações</span> <span class="form-row-content"></span></p>
+            </div>
+            <div class="form-floating mb-4 formulario-input form-erro">
+              <div class="alert alert-warning" role="alert">
+                <span>Sua e-mail ou sua senha está incorreta</span>
+              </div>
+            </div>
+            <?php
+            $_GET['erro'] = isset($_GET['erro']) ? $_GET['erro'] : " ";
+            if ($_GET['erro'] == "cadastro") : ?>
+              <div class="form-floating mb-4 formulario-input form-erro form-erro-show" style="min-height: 50px; margin-bottom: 3rem!important">
+                <div class="alert alert-warning" role="alert">
+                  <span>Cadastro irregular, o e-mail informado já existe em nosso sistema. Por favor, tente novamente.</span>
+                </div>
+              </div>
+            <?php endif; ?>
+            <div class="form-floating mb-3 formulario-input">
+              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+              <label for="floatingInput">E-mail</label>
+              <div class="formulario-icone">
+                <i class="fas fa-at"></i>
+              </div>
+            </div>
+            <div class="form-floating formulario-input">
+              <input autocomplete="off" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" type="password" class="form-control" id="floatingPassword" placeholder="Password">
+              <label for="floatingPassword">Senha</label>
+              <div class="formulario-icone">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+              <div class="formulario-icone-password">
+                <i class="fas fa-solid fa-eye "></i>
+              </div>
+            </div>
+            <div class="form-floating formulario-input fx-betw-st mt-2">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <label class="form-check-label" for="flexCheckChecked">
+                  Lembrar minha senha
+                </label>
+              </div>
+              <div class="form-check">
+                <label class="form-check-label" for="resetarSenha">
+                  <a href="#" id="resetarSenha">Esqueci minha senha</a>
+                </label>
+              </div>
+            </div>
+            <div class="form-floating formulario-input">
+              <div class="col-12">
+                <button id="btn-login" class="btn btn-primary" type="button">
+                  <i class="fas fa-sign-in-alt"></i>
+                  Acessar</button>
+              </div>
+            </div>
+
+            <div class="form-floating formulario-input form-cadastrarUsuarioBtn fx-center mt-2">
+              <div class="form-check">
+                <label class="form-check-label" for="cadastrarUsuario">Você não tem uma conta?
+                  <span id="cadastrarUsuario">Cadastre-se</span></label>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="bannerImagem">
+        <img draggable="false" src="./assets/IMG/bg-home.jpg" alt="Professor dando aula">
+      </div>
+    </div>
+  </section>
+</main>
+<section id="cadastro" class="fx-center cadastro-showd">
+  <div class="cadastro-container fx-center">
+    <div class="cadastro-container-caminho">
+      <div class="caminho-logo-gandula">
+        <img src="/assets/IMG/logo-gandula.svg" alt="Logo gandula">
+      </div>
+      <div class="caminho-form">
+        <div class="caminho-form-container fx-st-ctr">
+          <div class="caminho-form-container-icon fx-center caminho-icon-analise">
+            <div class="caminho-form-container-icon-modelo fx-center">
+              <i class="fas fa-circle"></i>
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+          <div class="caminho-form-container-texto">
+            <h3>Ocupação</h3>
+            <p>Escolha a opção na qual você se classifica</p>
+          </div>
+        </div>
+        <div class="caminho-form-container fx-st-ctr">
+          <div class="caminho-form-container-icon caminho-icon-line fx-center">
+            <div class="caminho-form-container-icon-modelo fx-center">
+              <i class="fas fa-circle"></i>
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+          <div class="caminho-form-container-texto">
+            <h3>Infomações pessoais</h3>
+            <p>Informações necessária para o reconhecimento</p>
+          </div>
+        </div>
+        <div class="caminho-form-container fx-st-ctr">
+          <div class="caminho-form-container-icon caminho-icon-line fx-center">
+            <div class="caminho-form-container-icon-modelo fx-center">
+              <i class="fas fa-circle"></i>
+              <i class="fas fa-check"></i>
+            </div>
+          </div>
+          <div class="caminho-form-container-texto">
+            <h3>Finalizar</h3>
+            <p>Coletamos todas informações, hora de conhecer a plataforma</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cadastro-container-formulario">
+      <form id="regForm" class="fx-center" method="POST" action="/app/auth/cadastro">
+        <div>
+          <!-- One "tab" for each step in the form: -->
+          <div class="tab">
+            <div class="cadastro-container-conteudo">
+              <h2>Qual é a sua ocupação?</h2>
+              <div class="cadastro-container-checkout fx-center">
+                <label for="ocupacao-docente" id="docente-box" class="cadastro-container-conteudo-marcacoes fx-st-ctr">
+                  <div class="conteudo-marcacoes-option">
+                    <input type="radio" class="form-check-input" value="docente" name="ocupacao" id="ocupacao-docente">
+                  </div>
+                  <div class="container-marcacoes-texto">
+                    <h4>Professor(a)</h4>
+                    <p>Você terá acesso todas a opções de professor</p>
+                  </div>
+                  <div class="submit-cadastro-ocupacao" data-name="docente"></div>
+                </label>
+                <label for="ocupacao-discente" id="discente-box" class="cadastro-container-conteudo-marcacoes fx-st-ctr">
+                  <div class="conteudo-marcacoes-option">
+                    <input type="radio" class="form-check-input" value="discente" name="ocupacao" id="ocupacao-discente">
+                  </div>
+                  <div class="container-marcacoes-texto">
+                    <h4>Aluno(a)</h4>
+                    <p>Você terá acesso todas a opções do aluno</p>
+                  </div>
+                  <div class="submit-cadastro-ocupacao" data-name="discente"></div>
+                </label>
+              </div>
+            </div>
+
+          </div>
+          <div class="tab">
+
+            <div class="cadastro-container-conteudo">
+              <h2>Informações pessoais</h2>
+              <div class="cadastro-container-informacoespessoais fx-center">
+                <fieldset>
+                  <legend>Nome</legend>
+                  <input type="text" placeholder="Digite seu nome" name="nome" id="nome">
+                </fieldset>
+                <fieldset>
+                  <legend>E-mail</legend>
+                  <input type="email" placeholder="Digite seu e-mail" name="email" id="email">
+                </fieldset>
+                <fieldset>
+                  <legend>Senha</legend>
+                  <input type="password" placeholder="Informe uma senha" name="senha" id="senha">
+                </fieldset>
+                <fieldset>
+                  <legend>Data de Nascimento</legend>
+                  <input type="date" name="datanascimento" id="datanascimento">
+                </fieldset>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab">
+
+            <div class="cadastro-container-conteudo mt-5">
+              <h2>Finalizar cadastro</h2>
+              <p class="cadastro-paragrafo-finalizar">Parabéns! temos todas as informações necessárias para o cadastro em nosso sistema</p>
+              <input type="hidden" name="cadastro" value="true">
+              <div class="cadastro-container-finalizar fx-center">
+                <img src="/assets/IMG/image-cadastrar-finalizar.svg" alt="Imagem de finalizar o cadastro">
+              </div>
+            </div>
+          </div>
+          <div class="tab-btn fx-end-ctr" style="overflow:auto;">
+            <div>
+              <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
+              <button type="button" id="nextBtn" onclick="nextPrev(1)">Próxima</button>
+            </div>
+          </div>
+          <!-- Circles which indicates the steps of the form: -->
+          <div class="step-position">
+            <span class="step"></span>
+            <span class="step"></span>
+            <span class="step"></span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <button class="btn-close-cadastro"><i class="fa fa-times" aria-hidden="true"></i></button>
+  </div>
+
+  </div>
+</section>

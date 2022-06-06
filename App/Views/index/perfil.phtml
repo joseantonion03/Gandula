@@ -1,0 +1,97 @@
+<div id="container-conteudo">
+    <h2 class="container-titulo">Perfil</h2>
+    <div id="perfil" class="mr-2">
+        <div class="perfil-exibir_user fx-st-ctr">
+            <div class="perfil-exibir_user-foto">
+                <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['foto'] ?>" id="perfil__upload-imagem-main" alt="foto de perfil">
+            </div>
+            <div class="perfil-exibir_user-nome">
+                <?php
+                $nome = explode(" ", $this->view->ocupacao['nome']);
+                $nome[1] = isset($nome[1]) ? $nome[1] : "";
+                $nome = $nome[0] . " " . $nome[1];
+                ?>
+                <h2><?= $nome ?></h2>
+                <p>Bahia, BR</p>
+            </div>
+        </div>
+        <div class="perfil-content my-4">
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <a class="nav-item nav-link active" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Configuração</a>
+                    <a class="nav-item nav-link" id="nav-foto-tab" data-toggle="tab" href="#nav-foto" role="tab" aria-controls="nav-foto" aria-selected="false">Foto do perfil</a>
+                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Mudar senha</a>
+                </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <form class="py-4" method="post" action="/app/perfil/dados">
+                        <div class="row mr-0 my-2 mw-100">
+                            <div class="col">
+                                <label for="exampleInputEmail1">Nome</label>
+                                <input type="text" value="<?= $this->view->ocupacao['nome'] ?>" readonly class="form-control" id="perfil__value-nome" name="perfil__value-nome" placeholder="Seu nome">
+                            </div>
+                            <div class="col">
+                                <label for="exampleInputEmail1">E-mail</label>
+                                <input type="email" disabled value="<?= $this->view->ocupacao['email'] ?>" readonly class="form-control" id="perfil__value-email" name="perfil__value-email" placeholder="Seu email">
+                                <small id="emailHelp" class="form-text text-muted">Nunca vamos compartilhar seu email, com ninguém.</small>
+                            </div>
+                        </div>
+                        <div class="row mr-0 my-2 mw-100">
+                            <div class="col">
+                                <label for="exampleInputEmail1">Telefone</label>
+                                <input type="text" readonly class="form-control" value="<?= $this->view->ocupacao['telefone'] ?>" id="perfil__value-telefone" name="perfil__value-telefone" placeholder="Seu telefone">
+                            </div>
+                            <div class="col">
+                                <label for="exampleInputPassword1">Data de nascimento</label>
+                                <input type="date" readonly class="form-control" value="<?= $this->view->ocupacao['datanascimento'] ?>" id="perfil__value-data" name="perfil__value-data" placeholder="Data de nascimento">
+                            </div>
+                        </div>
+                        <button type="button" class="px-3 mt-3 btn btn-primary">Editar</button>
+                    </form>
+                </div>
+                <div class="tab-pane fade show py-4" id="nav-foto" role="tabpanel" aria-labelledby="nav-profile-tab">
+                    <div class="row my-4 mr-0">
+                        <div class="col">
+                            <h2>Upload</h2>
+                            <p>Escolha o arquivo que deseja fazer o upload</p>
+                        </div>
+                    </div>
+                    <div class="row mr-0">
+                        <div class="col fx-st-end">
+                            <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['foto'] ?>" alt="foto de perfil" id="perfil__upload-imagem" class="img-thumbnail">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="perfil__upload-file-input" id="customFile">
+                                <label class="custom-file-label" for="perfil__upload-file-input">Escolher arquivo</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mr-0 my-4">
+                        <div class="col">
+                            <div id="perfil__upload-titulo">
+                                <div class="progress">
+                                    <div class="progress-bar py-2 progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 0%">0%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                    <form class="py-4" method="POST" action="/app/perfil/senha">
+                        <div class="row mr-0 my-2 mw-100">
+                            <div class="col">
+                                <label for="exampleInputEmail1">Senha atual</label>
+                                <input autocomplete="off" required type="text" class="form-control" id="perfil__senha__atual" name="perfil__senha__atual" placeholder="Sua senha atual">
+                            </div>
+                            <div class="col">
+                                <label for="exampleInputEmail1">Nova senha</label>
+                                <input autocomplete="off" required type="text" class="form-control" id="perfil__senha__new" name="perfil__senha__new" placeholder="Sua nova senha">
+                            </div>
+                        </div>
+                        <button type="submit" class="px-3 mt-3 btn btn-primary">Modificar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
