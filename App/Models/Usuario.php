@@ -39,6 +39,8 @@ class Usuario extends Model
                     try {
                         //$decoded = JWT::decode($this->__get('token'), $this->key, array('HS256'));
                         $this->__set('email', $value['email']);
+                        $_SESSION['USER_ID'] = $value['id'];
+                        $_SESSION['USER_OCUPACAO'] = $value['tipo'];
                         $tks = explode('.', $this->__get('token'));
                         list($headb64, $bodyb64, $cryptob64) = $tks;
                         $header = JWT::jsonDecode(\Firebase\JWT\JWT::urlsafeB64Decode($bodyb64));

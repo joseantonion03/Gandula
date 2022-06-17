@@ -2,6 +2,7 @@
 
 var mySocket;
 const socketMessageListener = (event) => { var data = JSON.parse(event.data);
+    console.log(event);
     if(data.nick!=""){
         $(".nick").html(data.nick);
     }

@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+date_default_timezone_set('America/Sao_Paulo'); //Fuso horario de brasilia
+
 /*
 if ($_SERVER['REQUEST_SCHEME'] == 'http') {
     $url = "https://". $_SERVER['SERVER_NAME']."/";

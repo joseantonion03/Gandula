@@ -320,7 +320,8 @@ if (count($this->view->salas) > 0) {
             break;
         case '/mensagem':
             echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>' . "\n\t";
-            echo '<script src="/assets/JS/mensagem.js?ver=1.0.0"></script>' . "\n\t";
+            echo '<script src="/assets/JS/mensagem.js?ver=1.0.0"></script>';
+            echo '<script>var id_user = '. $_SESSION['USER_ID'] .'</script>';
             break;
     }
     ?>

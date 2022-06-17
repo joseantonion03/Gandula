@@ -28,7 +28,10 @@
         <div class="container-turmas fx-st-ctr">
 
             <?php foreach ($this->view->salas as $sala) : ?>
-                <?php foreach ($sala as $salas) : ?>
+                <?php foreach ($sala as $salas) : 
+                    $date = new DateTime($salas['data']);
+                    $data = $date->format('d/m/Y');
+                    ?>
                     <div class="turmas-conteudo">
                         <div class="turmas-conteudo-titulo">
                             <h2 class="fx-st-ctr"><span class="turmas-conteudo-titulo-point" style="background-color: <?= $salas['cor']  ?>;"></span><?= $salas['nome']  ?></h2>
@@ -37,7 +40,7 @@
                         <div class="turmas-conteudo-square">
                             <div class="turmas-square-corpo">
                                 <h3><?= $salas['total'] ?> <?= $salas['total'] <= 1 ? "Pessoa" : "Pessoas"; ?> presente nesta sala</h3>
-                                <p>Criada em 12/06/2022</p>
+                                <p>Criada em <?= $data; ?></p>
                             </div>
                             <button type="button" style="background-color: <?= $salas['cor']  ?>; border-color: <?= $salas['cor']  ?>" class="btn btn-primary"><a href="/sala?id=<?= $salas['id']  ?>">Visitar sala</a></button>
                         </div>

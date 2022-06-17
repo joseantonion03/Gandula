@@ -13,6 +13,7 @@ class Turma extends Model
     private $cor;
     private $codigo;
     private $ocupacao;
+    private $data;
 
     public function __get($atributo)
     {
@@ -29,14 +30,15 @@ class Turma extends Model
         $codigo = substr($stringCodigo, (strlen($stringCodigo) - 6), strlen($stringCodigo));
         $this->__set('codigo', strtoupper($codigo));
 
-        $query = "INSERT INTO Turma (idUserCriador, idUserLider, nome, cor, codigo) 
-        VALUES (:idCriador, :idLider, :nome, :cor, :codigo)";
+        $query = "INSERT INTO Turma (idUserCriador, idUserLider, nome, cor, codigo, data) 
+        VALUES (:idCriador, :idLider, :nome, :cor, :codigo, :data)";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':idCriador', $this->__get('id'));
         $stmt->bindValue(':idLider', "");
         $stmt->bindValue(':nome', $this->__get('nome'));
         $stmt->bindValue(':cor', $this->__get('cor'));
         $stmt->bindValue(':codigo', $this->__get('codigo'));
+        $stmt->bindValue(':data', $this->__get('data'));
         if ($stmt->execute()) {
             return true;
         }
@@ -53,19 +55,34 @@ class Turma extends Model
             $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $idTurma = $resultado[0]['id'];
 
-
-            $query = "INSERT INTO Turmamembros (idTurma, idUserMembro, cor) 
-            VALUES (:idTurma, :idUserMembro, :cor)";
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':idTurma', $idTurma);
-            $stmt->bindValue(':idUserMembro', $this->__get('id'));
-            $stmt->bindValue(':cor', $this->__get('cor'));
-            if ($stmt->execute()) {
-                return true;
+            if(!$this->verificarSeMembroExiste($idTurma, $this->__get('id'))){
+                $query = "INSERT INTO Turmamembros (idTurma, idUserMembro, cor) 
+                VALUES (:idTurma, :idUserMembro, :cor)";
+                $stmt = $this->db->prepare($query);
+                $stmt->bindValue(':idTurma', $idTurma);
+                $stmt->bindValue(':idUserMembro', $this->__get('id'));
+                $stmt->bindValue(':cor', $this->__get('cor'));
+                if ($stmt->execute()) {
+                    return true;
+                }
             }
+ 
         }
 
 
+        return false;
+    }
+    public function verificarSeMembroExiste($idTurma, $idMembro){
+        $query = "SELECT * FROM Turmamembros WHERE idTurma = :idTurma AND idUserMembro = :idUserMembro";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':idTurma', $idTurma);
+        $stmt->bindValue(':idUserMembro', $idMembro);
+        if ($stmt->execute()) {
+            $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            if(count($resultado) > 0){
+                return true;
+            }
+        }
         return false;
     }
     public function turmaListagem()
@@ -101,7 +118,8 @@ class Turma extends Model
                             'nome' => $row['nome'],
                             'cor' => $row['cor'],
                             'codigo' => $row['codigo'],
-                            'total' => $this->turmaTotalAluno($row['id'])
+                            'total' => $this->turmaTotalAluno($row['id']),
+                            'data' => $row['data']
                         ]
                     );
                     //$resultado[] = $row;

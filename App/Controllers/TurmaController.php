@@ -14,6 +14,10 @@ class TurmaController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $timeZone = new \DateTimeZone('America/Sao_Paulo');
+        $objDateTo = new \DateTime();
+        $this->view->data = $objDateTo->setTimezone($timeZone);
+        $data = $objDateTo->format('Y/m/d');
 
         $turma = Container::getModel('Turma');
         $nome = filter_input(INPUT_POST, 'criarsalaCodigoTurma', FILTER_UNSAFE_RAW);
@@ -22,6 +26,7 @@ class TurmaController extends Action
         $turma->__set("id", $_SESSION['idUserOnline']);
         $turma->__set("nome", $nome);
         $turma->__set("cor", $cor);
+        $turma->__set("data", $data);
         
         if ($turma->turmaCriar()) {
             header("Location: /timeline?msg=sucesso&dir=turma&acao=criar");

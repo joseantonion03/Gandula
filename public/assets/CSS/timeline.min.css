@@ -704,7 +704,7 @@ header .header-configuracoes .header-configuracoes-nome .header-ocupacao {
 
 .container-turmas {
   width: 100%;
-  height: 400px;
+  height: auto;
   margin-top: 20px;
   flex-wrap: wrap;
 }
@@ -718,7 +718,13 @@ header .header-configuracoes .header-configuracoes-nome .header-ocupacao {
   margin-right: 10px;
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 1000px) {
+  .turmas-conteudo {
+    width: calc(50% - 10px);
+  }
+}
+
+@media screen and (max-width: 525px) {
   .turmas-conteudo {
     width: 100%;
     margin-right: 0;
