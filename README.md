@@ -87,4 +87,8 @@ Fácil! Dentro da pasta PUBLIC, temos um arquivo chamado app.php, basta executar
 
 ## Suporte
 
+<<<<<<< HEAD
 Para suporte, e-mail: ja2915588@gmail.com.
+=======
+Para suporte, e-mail: ja2915588@gmail.com.
+>>>>>>> e94ea85333edf64f718129e3a9f94aeb6777135c
