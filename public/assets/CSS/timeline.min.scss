@@ -277,6 +277,69 @@ header {
       }
     }
 
+    .header-configuracoes-icones {
+      label {
+        position: relative;
+
+        .notificacao,
+        .popup_mensagem {
+          z-index: 99;
+          visibility: hidden;
+          position: absolute;
+          top: 25px;
+          right: 0;
+          width: 350px;
+          height: auto;
+          max-height: 500px;
+          overflow-y: auto;
+          background-color: #ffffff;
+          padding: 5px 0;
+        }
+        .popup_mensagem_content{
+          width: calc(100% - 20px);
+          height: 80px;
+          margin: 10px;
+          margin-top: 2.5px;
+          margin-bottom: 2.5px;
+        }
+        .popup_mensagem_content_listar{
+          padding: 0 10px;
+          display: flex;
+          justify-content: center;
+          flex-wrap: wrap;
+          flex-direction: column;
+          width: 100%;
+          height: 100%;
+          color: #29292E;
+
+          h2, p{
+            margin-bottom: 0;
+          }
+          h2{
+            font-size: 1.4rem;
+          }
+          p{
+            font-size: .9rem;
+          }
+
+          &:hover,
+          &:active{
+            text-decoration: none;
+          }
+        }
+
+        &:hover .notificacao,
+        &:active .notificacao {
+          visibility: visible !important;
+        }
+
+        &:hover .popup_mensagem,
+        &:active .popup_mensagem {
+          visibility: visible !important;
+        }
+      }
+    }
+
     .header-setting {
       position: relative;
 
@@ -412,7 +475,7 @@ header {
 .container-acoes-select {
   position: relative;
   height: 50px;
-  width: 135px;
+  min-width: 135px;
   border: 1px solid #cecece;
   border-radius: 5px;
   margin-right: 10px;
@@ -434,19 +497,49 @@ header {
 }
 
 .container-acoes-select-filtrar {
+  position: relative;
   height: 100%;
   padding: 0 30px 0 30px;
-  appearance: none;
   cursor: pointer;
   border: 0;
   color: #787486;
   background-color: transparent;
 
-  option {
+  button {
     width: 100%;
-    height: 40px;
-    min-height: 40px !important;
+    height: 100%;
+    background-color: transparent;
+    margin-right: 10px;
+    color: #787486;
   }
+
+  .container-acoes-select-filtrar-opc {
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: auto;
+    top: 50px;
+    left: 0;
+    background-color: #ffffff;
+
+    button {
+      width: 100%;
+      height: 50px;
+
+      a {
+        color: #29292E;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+.container-acoes-select-filtrar:hover .container-acoes-select-filtrar-opc,
+.container-acoes-select-filtrar:active .container-acoes-select-filtrar-opc {
+  visibility: visible !important;
 }
 
 .container-acoes-button {
@@ -662,6 +755,7 @@ header {
       width: calc(50% - 10px);
     }
   }
+
   @media screen and (max-width: 525px) {
     & {
       width: 100%;
@@ -735,7 +829,7 @@ header {
   height: auto;
   min-height: calc(100vh - 80px);
 
-  @media screen and (max-width: 1100px) {
+  @media screen and (max-width: 1160px) {
     & {
       grid-template-columns: auto;
     }
@@ -984,12 +1078,12 @@ header {
     border-radius: 10px;
     padding: 5px 10px;
 
-    .membros-conteudo-dropwn{
+    .membros-conteudo-dropwn {
       width: 10px;
       height: 100%;
       position: relative;
 
-      .membros-conteudo-dropwn-content{
+      .membros-conteudo-dropwn-content {
         display: none;
         position: absolute;
         top: 10px;
@@ -1002,22 +1096,25 @@ header {
         height: auto;
         z-index: 2;
 
-        ul li{
+        ul li {
           display: block;
           text-align: left;
+
           &:hover,
-          &:active{
-            text-decoration: none!important;
+          &:active {
+            text-decoration: none !important;
           }
+
           a:hover,
-          a:active{
-            text-decoration: none!important;
+          a:active {
+            text-decoration: none !important;
           }
         }
       }
+
       &:hover .membros-conteudo-dropwn-content,
-      &:active .membros-conteudo-dropwn-content{
-        display: block!important;
+      &:active .membros-conteudo-dropwn-content {
+        display: block !important;
       }
     }
   }
@@ -1142,6 +1239,10 @@ header {
     border-right: 1px solid #cecece;
   }
 
+  .mensagem-conteudo-semLider {
+    height: calc(100vh - 160px) !important;
+  }
+
   .mensagem-conteudo-msg {
     width: 100%;
     height: auto;
@@ -1213,6 +1314,41 @@ header {
         background-color: #377DFF;
         color: #ffffff;
         font-size: 1.3rem;
+      }
+    }
+  }
+}
+
+.listar_mensagens_recentes {
+  width: 100%;
+  height: auto;
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  .listar_mensagens {
+    width: 100%;
+
+    .listar_conversa {
+      display: block;
+      width: 100%;
+      height: 80px;
+      border: 1px solid #5e93f6;
+      border-radius: 2.5px;
+      padding: 10px;
+      margin-bottom: 10px;
+
+      &:hover,
+      &:active {
+        text-decoration: none;
+      }
+
+      h2,
+      p {
+        margin: 0;
+        padding: 0;
+        color: #29292E;
       }
     }
   }
@@ -1511,7 +1647,8 @@ header {
 
   .perfil-content {
 
-    input, select,  
+    input,
+    select,
     button {
       height: calc(2.25rem + 10px);
     }
@@ -1529,25 +1666,71 @@ header {
         }
       }
     }
-    #nav-foto{
-      .row{
+
+    #nav-foto {
+      .row {
         max-width: 1200px;
       }
-      #perfil__upload-titulo{
+
+      #perfil__upload-titulo {
         display: none;
         align-items: center;
 
-        .progress{
+        .progress {
           height: 1.4rem;
         }
       }
-      img{
+
+      img {
         width: 200px;
         height: 200px;
       }
-      .custom-file{
+
+      .custom-file {
         width: calc(100% - 200px);
       }
     }
   }
+}
+.usuario_ocupacao{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  z-index: 9999;
+  width: 100%;
+  height: 100vh;
+
+  .usuario_ocupacao_content{
+    width: 400px;
+    height: auto;
+    border: 1px solid #F9F9F9;
+    background-color: #354259;
+    border-radius: 5px;
+    padding: 40px 20px;
+    margin: 0 10px;
+
+    @media screen and (max-width: 420px) {
+      &{
+        width: 100%;
+      }
+    }
+
+    h2, p{
+      color: #F6FBF4;
+    }
+    select, button{
+      width: 100%;
+      height: 50px;
+      margin: 10px auto;
+      display: block;
+      border-radius: 2.5px;
+    }
+  }
+}
+.usuario_ocupacao-hidden{
+  overflow: hidden;
 }

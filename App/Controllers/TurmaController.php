@@ -27,10 +27,14 @@ class TurmaController extends Action
         $turma->__set("nome", $nome);
         $turma->__set("cor", $cor);
         $turma->__set("data", $data);
-        
+
         if ($turma->turmaCriar()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Sala criada com sucesso!';
             header("Location: /timeline?msg=sucesso&dir=turma&acao=criar");
         } else {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Não conseguimos criar sua sala!';
             header("Location: /timeline?msg=erro&dir=turma&acao=criar");
         }
     }
@@ -47,6 +51,8 @@ class TurmaController extends Action
         $turma->__set("codigo", $codigo);
         $turma->__set("cor", $cor);
         if ($turma->turmaEntrar()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Você entrou em uma turma';
             header("Location: /timeline?msg=sucesso&dir=turma&acao=entra");
         } else {
             header("Location: /timeline?msg=erro&dir=turma&acao=entra");
@@ -71,8 +77,12 @@ class TurmaController extends Action
 
         if ($_SESSION['idTurmaPostagem'] == $idTurma) {
             if ($postagem->criar()) {
+                $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+                $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Postagem criada com sucesso!';
                 header("Location: /sala?id=$idTurma&msg=sucesso&acao=criar");
             } else {
+                $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+                $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Não conseguimos criar sua postagem!';
                 header("Location: /sala?id=$idTurma&msg=erro&acao=criar");
             }
         }

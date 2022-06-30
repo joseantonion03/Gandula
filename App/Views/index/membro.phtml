@@ -33,7 +33,7 @@
                                 <?php if ($this->view->ocupacao['ocupacao'] == 'docente') { ?>
                                     <div class="fx-st-ctr">
                                         <div class="sala-membros-conteudo-img">
-                                            <img src="<?= $membros['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $membros['foto'] ?>" alt="Foto de perfil">
+                                            <img src="<?= $membros['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $membros['fotodropbox'] ?>" alt="Foto de perfil">
                                         </div>
                                         <div class="sala-membros-conteudo-texto fx-st-ctr">
                                             <?php if ($idLider == $membros['id']) { ?>
@@ -53,7 +53,7 @@
                                     </div>
                                 <?php } else { ?>
                                     <div class="sala-membros-conteudo-img">
-                                        <img src="<?= $membros['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $membros['foto'] ?>" alt="Foto de perfil">
+                                        <img src="<?= $membros['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $membros['fotodropbox'] ?>" alt="Foto de perfil">
                                     </div>
                                     <div class="sala-membros-conteudo-texto fx-st-ctr">
                                         <?php if ($idLider == $membros['id']) { ?>

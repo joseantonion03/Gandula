@@ -3,7 +3,7 @@
     <div id="perfil" class="mr-2">
         <div class="perfil-exibir_user fx-st-ctr">
             <div class="perfil-exibir_user-foto">
-                <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['foto'] ?>" id="perfil__upload-imagem-main" alt="foto de perfil">
+                <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['fotodropbox'] ?>" id="perfil__upload-imagem-main" alt="foto de perfil">
             </div>
             <div class="perfil-exibir_user-nome">
                 <?php
@@ -59,11 +59,13 @@
                     </div>
                     <div class="row mr-0">
                         <div class="col fx-st-end">
-                            <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['foto'] ?>" alt="foto de perfil" id="perfil__upload-imagem" class="img-thumbnail">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="perfil__upload-file-input" id="customFile">
-                                <label class="custom-file-label" for="perfil__upload-file-input">Escolher arquivo</label>
-                            </div>
+                            <img src="<?= $this->view->ocupacao['foto'] == 'perfil.webp' ? '/assets/IMG/PERFIL/perfil.webp' : $this->view->ocupacao['fotodropbox'] ?>" alt="foto de perfil" id="perfil__upload-imagem" class="img-thumbnail">
+                            <form id="myForm" style="display: contents;" encType="multipart/form-data" action="/app/perfil/foto" method="post">
+                                <div class="custom-file">
+                                    <input name="image" accept="image/png, image/jpeg" type="file" class="custom-file-input" id="perfil__upload-file-input">
+                                    <label class="custom-file-label" for="perfil__upload-file-input">Escolher arquivo</label>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="row mr-0 my-4">

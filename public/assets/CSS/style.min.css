@@ -51,6 +51,40 @@ span.buttonText {
   margin: 0 10px;
 }
 
+.formulario-dados {
+  width: 100%;
+}
+
+.formulario-google {
+  width: 100%;
+}
+
+.g_id_signin {
+  width: 100%;
+}
+
+.g_id_signin .S9gUrf-YoZ4jf {
+  width: 100%;
+}
+
+.g_id_signin iframe {
+  width: 100% !important;
+}
+
+.nsm7Bb-HzV7m-LgbsSe {
+  width: 100% !important;
+}
+
+.haAclf {
+  width: 100% !important;
+  display: block !important;
+}
+
+.nsm7Bb-HzV7m-LgbsSe {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
 /* ---------------------------------------- FIM LAYOUT - LOGIN USANDO O GOOGLE -------------------------------------------*/
 .container-conteudo {
   width: 100%;

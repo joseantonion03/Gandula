@@ -26,7 +26,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 **Framework:** Booststrap
 
-**Bibliotecas:** Jquery, Font Awesome, Trumbowyg, Chart.js, FullCalendar, Upload.js, Ratchet PHP
+**Bibliotecas:** Jquery, Font Awesome, Trumbowyg, Chart.js, FullCalendar, dropbox-api, Ratchet PHP
 
 **Banco de Dados:** MySQL
 

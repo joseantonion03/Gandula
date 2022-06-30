@@ -6,22 +6,22 @@ CREATE TABLE `usuario` (
   `email` varchar(100) NOT NULL,
   `senha` varchar(250) NOT NULL,
   `datanascimento` date NOT NULL,
-  `telefone` varchar(20) NOT NULL,
+  `telefone` varchar(20) DEFAULT '',
   `tipo` varchar(40) NOT NULL,
   `foto` varchar(200) NOT NULL,
-  `token` varchar(250) NOT NULL,
+  `token` varchar(250) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `turma` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `idUserCriador` int(11) NOT NULL,
-  `idUserLider` int(11) NOT NULL,
+  `idUserLider` int(11) DEFAULT '',
   `nome` varchar(200) NOT NULL,
   `cor` varchar(10) NOT NULL,
   `codigo` varchar(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 9 DEFAULT CHARSET = utf8mb4 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `turmamembros` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ CREATE TABLE `turmamembros` (
   `idUserMembro` int(11) NOT NULL,
   `cor` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 5 DEFAULT CHARSET = utf8mb4 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `postagem` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -38,7 +38,7 @@ CREATE TABLE `postagem` (
   `conteudo` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `data` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 13 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci 
 
 CREATE TABLE `horario` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -48,7 +48,7 @@ CREATE TABLE `horario` (
   `start` datetime DEFAULT NULL,
   `end` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 37 DEFAULT CHARSET = utf8 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8 
 
 CREATE TABLE `enquete` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -58,7 +58,7 @@ CREATE TABLE `enquete` (
   `data_inicial` datetime DEFAULT NULL,
   `data_final` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 36 DEFAULT CHARSET = utf8mb4 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `enquete_pergunta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -66,7 +66,7 @@ CREATE TABLE `enquete_pergunta` (
   `idDono` int(11) NOT NULL,
   `pergunta` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 24 DEFAULT CHARSET = utf8mb4 
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 
 
 CREATE TABLE `enquete_resposta` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -74,4 +74,4 @@ CREATE TABLE `enquete_resposta` (
   `idEnquete` int(11) NOT NULL,
   `idDono` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE = InnoDB AUTO_INCREMENT = 20 DEFAULT CHARSET = utf8mb4
+) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4

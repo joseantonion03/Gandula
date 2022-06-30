@@ -1,20 +1,17 @@
 <?php # Classe raiz do websocket
 namespace App;
 
-
+use Exception;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-use MF\Model\Model;
 
 date_default_timezone_set('America/Sao_Paulo'); # Horário de SP
 
-class Socket extends Model implements MessageComponentInterface
+class Socket implements MessageComponentInterface
 {
-    private $id_user;
 
-    public function __construct($id_user)
+    public function __construct()
     {
-        $this->id_user = $id_user;
         $this->clients = new \SplObjectStorage;
         $this->setLog("Servidor iniciado!");
     }
@@ -55,32 +52,10 @@ class Socket extends Model implements MessageComponentInterface
             $client->send(json_encode(array('from'=>'Servidor','msg'=>"O usuário {$conn->resourceId} está online!")));
         } */
     }
-    public function getUserOnlineDocente()
-    {
-        $query = "SELECT * FROM usuario u INNER JOIN turma t ON u.id = t.idUserCriador WHERE t.id = :id";
 
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':id', $this->__get('idTurma'));
-        if ($stmt->execute()) {
-            $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultado;
-        }
-        return [];
-    }
-    public function getUserOnlineLider()
-    {
-        $query = "SELECT * FROM usuario u INNER JOIN turma t ON u.id = t.idUserLider WHERE t.id = :id";
-
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':id', $this->__get('idTurma'));
-        if ($stmt->execute()) {
-            $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultado;
-        }
-        return [];
-    }
     public function onMessage(ConnectionInterface $from, $msg)
     {
+        $dados = json_decode($msg);
 
         $privateID = false;
         if (preg_match("/\[([0-9]\d*)\]/", $msg, $arrResult)) $privateID = $arrResult[1]; # Caso seja uma mensagem privada
@@ -91,9 +66,10 @@ class Socket extends Model implements MessageComponentInterface
                 if ($UsrIsOnline) {
                     if ($from->resourceId == $client->resourceId) continue; # Não precisa enviar ao usuário que mandou a msg
                     if ($privateID == $client->resourceId) {
-                        
+
                         $this->setLog("A Conexão {$client->resourceId} recebeu a mensagem de {$from->resourceId}");
-                        $client->send(json_encode(array('from' => 'Usuário' . $from->resourceId, 'msg' => "(msg privada)<br>" . trim(str_replace($arrResult[0], "", $msg)))));
+                        //$client->send(json_encode(array('from' => 'Usuário' . $from->resourceId, 'msg' => "(msg privada)<br>" . trim(str_replace($arrResult[0], "", $msg)))));
+                        $client->send(json_encode(array('from' => 'Usuário' . $dados->nome, 'msg' => "(msg privada)<br>" . trim(str_replace($arrResult[0], "", $dados->mensagem)))));
                     }
                 } else {
                     if ($from->resourceId != $client->resourceId) continue; # Não precisa enviar aos demais usuários
@@ -106,11 +82,12 @@ class Socket extends Model implements MessageComponentInterface
             foreach ($this->clients as $client) {
                 if ($from->resourceId == $client->resourceId) continue; # Não precisa enviar ao usuário que mandou a msg
                 $this->setLog("A Conexão {$client->resourceId} recebeu a mensagem de {$from->resourceId}");
-                $client->send(json_encode(array('from' => 'Usuário' . $from->resourceId, 'msg' => $msg)));
-                $client->send(json_encode(array('from' => 'Usuário' . $this->__get('id_user'), 'msg' => $msg)));
+                //$client->send(json_encode(array('from' => 'Usuário' . $from->resourceId, 'msg' => $msg)));
+                $client->send(json_encode(array('from' => $dados->nome, 'msg' => $dados->mensagem)));
             }
         }
     }
+
 
     public function onClose(ConnectionInterface $conn)
     {

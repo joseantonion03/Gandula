@@ -1,6 +1,5 @@
 <?php
 $salaLiberada = false;
-
 if (count($this->view->salas) > 0) {
     foreach ($this->view->salas as $sala) :
         foreach ($sala as $salas) :
@@ -36,7 +35,8 @@ if (count($this->view->salas) > 0) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/emoji/ui/trumbowyg.emoji.min.css" integrity="sha512-xpR3G7LZbpAnoUgES2Xu2Z/mK8NwejLjJpNHQtmdU36yGP2AS5kgpflPwv6vEurEeruDcghOtHkWNsOkwVx2ig==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.25.1/plugins/giphy/ui/trumbowyg.giphy.min.css" integrity="sha512-XtXSCsMCGIY7o4dasaT3nwKT3VPbYa+BMqBHxbThLEheafPGri4XDyiJiZAzri9vKSLb0UsxZHtXM9KCoH/hKw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <?php endif; ?>
-
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+    <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
     <link href='/assets/CSS/core/main.min.css' rel='stylesheet' />
     <link href='/assets/CSS/daygrid/main.min.css' rel='stylesheet' />
     <link href='/assets/CSS/mensagem.min.css' rel='stylesheet' />
@@ -107,9 +107,30 @@ if (count($this->view->salas) > 0) {
                     <div class="header-configuracoes-icones fx-center">
                         <label for="header-message">
                             <img draggable="false" src="/assets/IMG/icones/icone-mensagem.svg" alt="icone de mensagem">
+                            <div class="popup_mensagem">
+
+                                <?php
+                                if (count($this->view->recentes) > 0) {
+                                    foreach ($this->view->recentes as $recente) {
+                                        $nomeUsuarioMessagem = explode(" ", $recente['nomeUsuario']);
+                                        if ($nomeUsuarioMessagem[0] == 'Servidor') continue;
+                                        echo '<div class="popup_mensagem_content">
+                                        <a class="popup_mensagem_content_listar bg-light text-dark" href="/mensagem?id=' . $recente['id'] . '">
+                                            <h2>' . $recente['nome'] . '</h2>
+                                            <p>' . $nomeUsuarioMessagem[0] . ': ' . $recente['mensagem'] . '</p>
+                                        </a>
+                                    </div>';
+                                    }
+                                } else {
+                                    echo '<div class="popup_mensagem_content"><div class="popup_mensagem_content_listar bg-light text-dark"><p>Sinto muito em lhe informar, mas você não está presente em nenhuma sala</p></div></div>';
+                                } ?>
+                            </div>
                         </label>
-                        <label for="header-message">
+                        <label style="display: none" for="header-message">
                             <img draggable="false" src="/assets/IMG/icones/icone-alerta.svg" alt="icone de alerta">
+                            <div class="notificacao">
+                                <p>fdsfsdfsdf</p>
+                            </div>
                         </label>
                     </div>
                     <div class="header-configuracoes-nome fx-center">
@@ -183,8 +204,12 @@ if (count($this->view->salas) > 0) {
             </div>
         </div>
     </section>
+
     <div class="modal-bg-active"></div>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+    <script src='/assets/JS/alerta.js'></script>
     <?php if ($_SERVER['REDIRECT_URL'] == "/mensagem") { ?>
         <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
     <?php } else { ?>
@@ -316,13 +341,30 @@ if (count($this->view->salas) > 0) {
             break;
         case '/perfil':
             echo '<script src="https://js.upload.io/upload-js/v1"></script>';
+            echo '<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>';
             echo '<script src="/assets/JS/perfil.js?ver=1.0.0"></script>';
             break;
         case '/mensagem':
-            echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>' . "\n\t";
+            echo '<script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.3/jquery.mCustomScrollbar.concat.min.js"></script>' . "";
+            // echo '<script src="/assets/JS/lib/autobahn.js?ver=1.0.0"></script>';
             echo '<script src="/assets/JS/mensagem.js?ver=1.0.0"></script>';
-            echo '<script>var id_user = '. $_SESSION['USER_ID'] .'</script>';
+            echo '<script>var nome_user_online = "' . $_SESSION['nomeUserOnline'] . '"</script>';
+            echo '<script>var foto_user_online = "' . $_SESSION['fotoUserOnline'] . '"</script>';
             break;
+    }
+    ?>
+    <?php if (isset($_SESSION['ALERTA_TOAST_TYPE']) and isset($_SESSION['ALERTA_TOAST_MESSAGE'])) { ?>
+
+        <script>
+            Toast.fire({
+                icon: '<?= $_SESSION['ALERTA_TOAST_TYPE'] ?>',
+                title: '<?= $_SESSION['ALERTA_TOAST_MESSAGE'] ?>'
+            })
+        </script>
+
+    <?php
+        unset($_SESSION['ALERTA_TOAST_TYPE']);
+        unset($_SESSION['ALERTA_TOAST_MESSAGE']);
     }
     ?>
 </body>

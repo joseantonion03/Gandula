@@ -73,11 +73,14 @@ class Enquete extends Model
         FROM enquete
         INNER JOIN enquete_pergunta ON enquete.id_turma=enquete_pergunta.id 
         WHERE enquete.id_turma = :idTurma ORDER BY enquete.id DESC";*/
-
         $query = "SELECT * FROM enquete WHERE id_turma = :idTurma AND id = :idEnquete ORDER BY id DESC";
+        
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':idTurma', $this->__get('idTurma'));
         $stmt->bindValue(':idEnquete', $this->__get('idEnquete'));
+        $stmt->bindValue(':ano', date('Y'));
+        $stmt->bindValue(':mes', date('m'));
+        $stmt->bindValue(':dia', date('d'));
         if ($stmt->execute()) {
             $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultado;

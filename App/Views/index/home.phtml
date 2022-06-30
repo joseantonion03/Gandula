@@ -5,11 +5,20 @@
             <div class="container-acoes-select">
                 <img class="container-img-filtrar" draggable="false" src="/assets/IMG/icones/icone-filtrar.svg" alt="icone filtrar">
                 <img class="container-img-bottom" draggable="false" src="/assets/IMG/icones/icone-bottom.svg" alt="icone bottom">
-                <select class="container-acoes-select-filtrar" name="filtrar" id="filtrar">
-                    <option value="" disabled selected>Filtrar</option>
-                    <option value="">Recentes</option>
-                    <option value="">Inicial</option>
-                </select>
+                <div class="container-acoes-select-filtrar" name="filtrar" id="filtrar">
+                    <?php
+                    $filtrarSalas = isset($_GET['filtrar']) ? $_GET['filtrar'] : null;
+                    if ($filtrarSalas === 'decrescente' or $filtrarSalas === 'crescente') {
+                        echo '<button>' . ucfirst($filtrarSalas) . '</button>';
+                    } else {
+                        echo '<button>Filtrar</button>';
+                    }
+                    ?>
+                    <div class="container-acoes-select-filtrar-opc">
+                        <button><a href="/timeline?filtrar=decrescente">Decrescente</a></button>
+                        <button><a href="/timeline?filtrar=crescente">Crescente</a></button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container-acoes-right fx-center">
@@ -28,10 +37,10 @@
         <div class="container-turmas fx-st-ctr">
 
             <?php foreach ($this->view->salas as $sala) : ?>
-                <?php foreach ($sala as $salas) : 
+                <?php foreach ($sala as $salas) :
                     $date = new DateTime($salas['data']);
                     $data = $date->format('d/m/Y');
-                    ?>
+                ?>
                     <div class="turmas-conteudo">
                         <div class="turmas-conteudo-titulo">
                             <h2 class="fx-st-ctr"><span class="turmas-conteudo-titulo-point" style="background-color: <?= $salas['cor']  ?>;"></span><?= $salas['nome']  ?></h2>

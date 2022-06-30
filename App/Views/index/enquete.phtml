@@ -210,74 +210,37 @@
                     <div class="forms mt-4">
                         <h2 style="border-bottom: 3px solid <?= $salas['cor'] ?>;">Formulário</h2>
                         <?php if (count($this->view->viewEnquete) > 0) {
-                            function getHorasAtrasEnquete($horaAtual, $horaBase)
-                            {
-                                $horaAtual_dia = date('d', strtotime($horaAtual));
-                                $horaAtual_mes = date('m', strtotime($horaAtual));
-                                $horaAtual_ano = date('Y', strtotime($horaAtual));
-                                $horaAtual_hora = date('H', strtotime($horaAtual));
-                                $horaAtual_minuto = date('i', strtotime($horaAtual));
-                                $horaAtual_segundo = date('s', strtotime($horaAtual));
-                                $horaBase_dia = date('d', strtotime($horaBase));
-                                $horaBase_mes = date('m', strtotime($horaBase));
-                                $horaBase_ano = date('Y', strtotime($horaBase));
-                                $horaBase_hora = date('H', strtotime($horaBase));
-                                $horaBase_minuto = date('i', strtotime($horaBase));
-                                $horaBase_segundo = date('s', strtotime($horaBase));
-
-                                if (($horaAtual_ano - $horaBase_ano) > 0) {
-                                    return ($horaAtual_ano - $horaBase_ano) . 'ano atrás';
-                                } else if (($horaAtual_mes - $horaBase_mes) > 0) {
-                                    if (($horaAtual_mes - $horaBase_mes) == 1) {
-                                        return ($horaAtual_mes - $horaBase_mes) . ' mês atrás';
-                                    } else {
-                                        return ($horaAtual_mes - $horaBase_mes) . ' meses atrás';
-                                    }
-                                } else if (($horaAtual_dia - $horaBase_dia) > 0) {
-                                    if (($horaAtual_dia - $horaBase_dia) == 1) {
-                                        return ($horaAtual_dia - $horaBase_dia) . ' dia atrás';
-                                    } else {
-                                        return ($horaAtual_dia - $horaBase_dia) . ' dias atrás';
-                                    }
-                                } else if (($horaAtual_hora - $horaBase_hora) > 0) {
-                                    if (($horaAtual_hora - $horaBase_hora) == 1) {
-                                        return ($horaAtual_hora - $horaBase_hora) . ' hora atrás';
-                                    } else {
-                                        return ($horaAtual_hora - $horaBase_hora) . ' horas atrás';
-                                    }
-                                } else if (($horaAtual_minuto - $horaBase_minuto) > 0) {
-                                    if (($horaAtual_minuto - $horaBase_minuto) == 1) {
-                                        return ($horaAtual_minuto - $horaBase_minuto) . ' minuto atrás';
-                                    } else {
-                                        return ($horaAtual_minuto - $horaBase_minuto) . ' minutos atrás';
-                                    }
-                                } else {
-                                    return ($horaAtual_segundo - $horaBase_segundo) . ' segundos atrás';
-                                }
-                            }
-
                             foreach ($this->view->viewEnquete as $viewEnquete) {
                                 $dataHoje = str_replace("/", "-", $this->view->data->format('Y/m/d H:i:s'));
                                 $data_inicial = $viewEnquete['data_inicial'];
                                 $data_final = $viewEnquete['data_final'];
-                                echo "Hoje: " . $dataHoje . '<br>';
+                                /*echo "Hoje: " . $dataHoje . '<br>';
                                 echo "Final: " . $data_final . '<br>';
                                 echo "Inicial: " . $data_inicial . '<br>';
 
+                                $data_inicio = new DateTime($dataHoje);
+                                $data_fim = new DateTime($data_final);
+                            
+                                // Resgata diferença entre as datas
+                                $dateInterval = $data_inicio->diff($data_fim);
+                                echo $dateInterval->days;
+                                echo '<pre>';
+                                print_r($dateInterval);
+                                echo '</pre>';
 
 
-                                
                                 echo "<pre>";
                                 print_r($viewEnquete);
                                 echo $this->view->viewEnqueteGet;
-                                echo "</pre>";
+                                echo "</pre>";*/
 
                         ?>
                                 <a href="/enquete?id=<?= $idsala ?>&id_enquete=<?= $viewEnquete['id'] ?>" class="forms-content text-break mt-3 btn-light btn">
                                     <p class="text-break"><?= $viewEnquete['titulo'] ?></p>
                                     <div class="forms-time">
-                                        <span class="forms-time-span-1"><?= getHorasAtrasEnquete($dataHoje, $data_inicial); ?></span>
-                                        <span class="forms-time-span-2">Restam 4 dias</span>
+                                        <span class="forms-time-span-2">Restam <?= $data_final ?></span>
+                                        <!--<span class="forms-time-span-1"></span>
+                                        <span class="forms-time-span-2">Restam 4 dias</span>-->
                                     </div>
                                 </a>
                         <?php

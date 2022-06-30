@@ -3,7 +3,8 @@
     "require":{
         "php":">= 7.0",
         "firebase/php-jwt": "^6.1",
-        "cboden/ratchet": "^0.4.4"
+        "cboden/ratchet": "^0.4.4",
+        "spatie/dropbox-api": "^1.20"
     },
     "authors": [
         {
@@ -20,4 +21,3 @@
         }
     }
 }
-

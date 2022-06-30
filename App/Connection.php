@@ -4,13 +4,20 @@ namespace App;
 
 class Connection
 {
-    public static $host = "localhost";
-    public static $dbname = "gandula";
-    public static $user = "root";
-    public static $password = "";
+    public static $host = 'localhost';
+    public static $dbname = 'gandula';
+    public static $user = 'root';
+    public static $password = '';
 
     public static function getDb()
     {
+        /*$envPath = realpath(dirname(__FILE__) . '/../env.ini');
+        $env = parse_ini_file($envPath);
+        self::$host = $env['host'];
+        self::$user = $env['username'];
+        self::$password = $env['password'];
+        self::$dbname = $env['database'];*/
+
         try {
             $conn = new \PDO(
                 "mysql:host=" . self::$host . ";dbname=" . self::$dbname . ";charset=utf8",

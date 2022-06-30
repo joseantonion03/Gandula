@@ -5,6 +5,9 @@ foreach ($this->view->salas as $sala) :
         $idSala = isset($_GET['id']) ? $_GET['id'] : false;
         if ($idSala == $salas['id']) {
 
+            $nomeSala = $salas['nome'];
+            $idUserCriadorSala = $salas['idUserCriador'];
+            $idUserLiderSala = $salas['idUserLider'];
             $codigoSala = $salas['codigo'];
             $_SESSION['idTurmaPostagem'] = $salas['id'];
             $salaLiberada = true;
@@ -20,44 +23,57 @@ if ($salaLiberada) {
             <div class="mensagem">
                 <div class="mensagem-header fx-st-ctr">
                     <div class="mensagem-header-conteudo fx-center">
-                        <div class="mensagem-header-conteudo-foto">
-                            <img src="/assets/IMG/PERFIL/perfil.webp" alt="foto de perfil do josé">
-                        </div>
                         <div class="mensagem-header-conteudo-texto">
-                            <h2>José Antonio</h2>
-                            <p>On-line</p>
+                            <h2><?= $nomeSala ?></h2>
                         </div>
                     </div>
                 </div>
-                <div class="mensagem-conteudo messages">
+                <?php
+                if ($idUserCriadorSala != $_SESSION['idUserOnline'] and $idUserLiderSala != $_SESSION['idUserOnline']) {
+                    $classMessageSCLider = 'mensagem-conteudo-semLider';
+                }else{
+                    $classMessageSCLider = 'mensagem-conteudo-comLider';
+                }
+                ?>
+                <div class="mensagem-conteudo messages <?= $classMessageSCLider ?>">
                     <div class="messages-content">
-
+                        <?php
+                        if (count($this->view->mensagens) > 0) {
+                            foreach ($this->view->mensagens as $mensagem) {
+                                if ($idUserCriadorSala != $_SESSION['idUserOnline'] and $idUserLiderSala != $_SESSION['idUserOnline']) {
+                                    if ($mensagem['id_user_enviou'] == $idUserLiderSala) {
+                                        echo '<div class="message message-personal new">' . $mensagem['texto'] . '</div>';
+                                    } else {
+                                        echo '<div class="message new" title=""><figure class="avatar"><img src="/assets/IMG/PERFIL/' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
+                                    }
+                                } else {
+                                    if ($mensagem['id_user_enviou'] == $_SESSION['idUserOnline']) {
+                                        echo '<div class="message message-personal new">' . $mensagem['texto'] . '</div>';
+                                    } else {
+                                        echo '<div class="message new" title=""><figure class="avatar"><img src="/assets/IMG/PERFIL/' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
+                                    }
+                                }
+                            }
+                        }else{
+                            echo '<div class="mt-2 p-3 mb-2 bg-primary text-white">Nenhum histórico de conversa nesse bate papo</div>';
+                        }
+                        ?>
                     </div>
-                    <!--
-                    <div class="mensagem-conteudo-msg fx-st-ctr">
-                        <div class="mensagem-conteudo-msg-card">
-                            <h2>José Antonio</h2>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis eligendi similique quo fugit aliquam placeat soluta molestias quaerat, sequi at libero iusto autem ex magni tenetur rem qui corporis asperiores?</p>
-                            <p class="mesangem-data">2 horas atrás</p>
-                        </div>
-                    </div>
-                    <div class="mensagem-conteudo-msg fx-end-ctr">
-                        <div class="mensagem-conteudo-msg-card">
-                            <h2>Você</h2>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis eligendi similique quo fugit aliquam placeat soluta molestias quaerat, sequi at libero iusto autem ex magni tenetur rem qui corporis asperiores?</p>
-                            <p class="mesangem-data">2 horas atrás</p>
-                        </div>
-                    </div>
-                    -->
+                    
                 </div>
-                <div class="mensagem-enviar fx-center">
+                <?php
+                if ($idUserCriadorSala == $_SESSION['idUserOnline'] or $idUserLiderSala == $_SESSION['idUserOnline']) {
+                    echo '<div class="mensagem-enviar fx-center">
                     <div class="mensagem-enviar-conteudo">
                         <div class="fx-betw-st">
                             <input placeholder="Digite sua mensagem" class="message-input" type="text" name="mensagem" id="mensagem">
                             <button type="submit"><i class="fas fa-paper-plane" class="message-submit" aria-hidden="true"></i></button>
                         </div>
                     </div>
-                </div>
+                </div>';
+                }
+                ?>
+
             </div>
 
         </div>
@@ -66,7 +82,23 @@ if ($salaLiberada) {
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="informacoes-content">
-                
+                <div class="listar_mensagens_recentes">
+                    <h2>Mensagens recentes</h2>
+                    <div class="listar_mensagens">
+                        <?php if(count($this->view->recentes) > 0){
+                            foreach($this->view->recentes as $recente){
+                                $nomeUsuarioMessagem = explode(" ", $recente['nomeUsuario']);
+                                echo '<a class="listar_conversa" href="/mensagem?id=' . $recente['id'] . '">
+                                    <h2>'. $recente['nome'] .'</h2>
+                                    <p>'. $nomeUsuarioMessagem[0] .': '. $recente['mensagem'] .'</p>
+                                </a>';
+                            }
+                        }else{
+                            echo '<p>Sinto muito em lhe informar, mas você não está presente em nenhuma sala</p>';
+                        } ?>
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

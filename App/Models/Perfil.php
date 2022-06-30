@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use MF\Model\Model;
+use Spatie\Dropbox\Client as DropboxClient;
 
 class Perfil extends Model
 {
@@ -26,13 +27,38 @@ class Perfil extends Model
 
     public function modificarFoto()
     {
-        $query = "UPDATE usuario SET foto = :foto WHERE id = :id";
-        $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':foto', $this->__get('foto'));
-        $stmt->bindValue(':id', $this->__get('id'));
-        if ($stmt->execute()) {
-            return true;
+
+        //TOKEN DE ACESSO
+        
+        $envPath = realpath(dirname(__FILE__) . '/../../env.ini');
+        $env = parse_ini_file($envPath);
+        $token = $env['tokendropbox'];
+        //INSTANCIA DO CLIENTE DROPBOX
+        $obDropboxClient = new DropboxClient($token);
+        //CRIA UMA PASTA NO DROPBOX
+        //$obDropboxClient->createFolder('/Gandula2');
+        //$obDropboxClient->upload('/imagem.png', file_get_contents(__DIR__.'/perfil.png'), 'add');
+        //$list = $obDropboxClient->listFolder('/Gandula');
+        /*$link = $obDropboxClient->getTemporaryLink('/Gandula/imagem.png');
+        return $link;*/
+
+
+        $ARQUIVO['PASTA'] = dirname(__DIR__, 2) . '/public/assets/IMG/PERFIL/';
+        $ARQUIVO['TMP_NAME'] = $_FILES['image']['tmp_name'];
+        $ARQUIVO['NAME'] = $_FILES['image']['name'];
+        $ARQUIVO['RENAME'] =  'Gandula__' . uniqid() . '__' . time() . '.' . pathinfo($ARQUIVO['NAME'], PATHINFO_EXTENSION);
+        if (move_uploaded_file($ARQUIVO['TMP_NAME'], $ARQUIVO['PASTA'] . $ARQUIVO['RENAME'])) {
+            $obDropboxClient->upload('/Gandula/'. $ARQUIVO['RENAME']. '', file_get_contents($ARQUIVO['PASTA']. $ARQUIVO['RENAME']), 'add');
+            $query = "UPDATE usuario SET foto = :foto WHERE id = :id";
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':foto', $ARQUIVO['RENAME']);
+            $stmt->bindValue(':id', $this->__get('id'));
+            if ($stmt->execute()) {
+                unlink($ARQUIVO['PASTA'] . $ARQUIVO['RENAME']);
+                return true;
+            }
         }
+
         return false;
     }
     public function modificarSenha()

@@ -85,6 +85,13 @@ class Route extends Bootstrap
             'controller' => 'IndexController',
             'action' => 'mensagem'
         );
+
+        $routes['mensagemSalvar'] = array(
+            'route' => '/app/mensagem/salvar',
+            'controller' => 'IndexController',
+            'action' => 'mensagemSalvar'
+        );
+        
         $routes['enquete'] = array(
             'route' => '/enquete',
             'controller' => 'IndexController',
@@ -114,6 +121,16 @@ class Route extends Bootstrap
             'route' => '/app/auth/login',
             'controller' => 'AuthController',
             'action' => 'login'
+        );
+        $routes['loginGoogle'] = array(
+            'route' => '/app/auth/logingoogle',
+            'controller' => 'AuthController',
+            'action' => 'loginGoogle'
+        );
+        $routes['ocupacao'] = array(
+            'route' => '/app/user/ocupacao',
+            'controller' => 'AuthController',
+            'action' => 'salvarOcupacao'
         );
         $routes['cadastro'] = array(
             'route' => '/app/auth/cadastro',

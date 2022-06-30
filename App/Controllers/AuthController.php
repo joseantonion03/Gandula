@@ -10,8 +10,11 @@ class AuthController extends Action
 {
     public function sessao()
     {
+        $emailCookie = isset($_COOKIE['email']) ? $_COOKIE['email'] : null;
         $usuario = Container::getModel('Usuario');
+        $usuario->__set('email', $emailCookie);
         $this->view->usuario = $usuario->sessaoUsuario();
+
         if (!empty($this->view->usuario)) {
             foreach ($this->view->usuario as $key => $value) {
                 if ($key == 'email') {
@@ -33,6 +36,7 @@ class AuthController extends Action
         $this->view->response = $usuario->loginUsuario() == true ? 'success' : 'erro';
         exit(json_encode(array("response" => $this->view->response)));
     }
+
     public function cadastro()
     {
 
@@ -48,13 +52,11 @@ class AuthController extends Action
         $usuario->__set('senha', $senha);
         $usuario->__set('datanascimento', $datanascimento);
         $usuario->__set('ocupacao', $ocupacao);
-        if($usuario->cadastrarUsuario()){
+        if ($usuario->cadastrarUsuario()) {
             header('Location: /timeline');
-        }else{
+        } else {
             header('Location: /?erro=cadastro');
         }
-
-        
     }
     public function sair()
     {

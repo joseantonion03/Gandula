@@ -14,7 +14,6 @@ class IndexController extends Action
         if ($this->validationSessao()) {
             header("Location: /timeline");
         }
-
         $this->render('index', 'layout');
     }
     public function teste()
@@ -26,11 +25,14 @@ class IndexController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $this->view->recentes = $this->getMessage();
         $usuario = Container::getModel('Usuario');
         $this->view->ocupacao = $usuario->informacoesUsuario();
         $turma = Container::getModel('Turma');
         $turma->__set("id", $_SESSION['idUserOnline']);
         $turma->__set("ocupacao", $this->view->ocupacao['ocupacao']);
+        $filtrarSala = isset($_GET['filtrar']) ? $_GET['filtrar'] : null;
+        $turma->__set("filtragem", $filtrarSala);
         $this->view->salas = $turma->turmaListagem();
         /*echo "<pre>";
         print_r($this->view->salas);
@@ -43,6 +45,8 @@ class IndexController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $this->view->recentes = $this->getMessage();
+
         $idTurmaGetUrl = isset($_GET['id']) ? $_GET['id'] : null;
         $usuario = Container::getModel('Usuario');
         $this->view->ocupacao = $usuario->informacoesUsuario();
@@ -55,6 +59,7 @@ class IndexController extends Action
         $postagem->__set("id", $_SESSION['idUserOnline']);
         $postagem->__set("idTurma", $idTurmaGetUrl);
         $this->view->postagens = $postagem->mostrar();
+
         /*if ($_SESSION['idTurmaPostagem'] == $idTurmaGetUrl) {
         *}*/
 
@@ -68,6 +73,7 @@ class IndexController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $this->view->recentes = $this->getMessage();
 
         $usuario = Container::getModel('Usuario');
         $this->view->ocupacao = $usuario->informacoesUsuario();
@@ -79,6 +85,7 @@ class IndexController extends Action
         $turma->__set("ocupacao", $this->view->ocupacao['ocupacao']);
         $this->view->salas = $turma->turmaListagem();
         $this->view->membros = $turma->membroListar();
+
         $this->view->viewEnquete = $this->getEnquete();
         $this->render('membro', 'layoutTimeline');
     }
@@ -113,13 +120,69 @@ class IndexController extends Action
         $turma->__set("ocupacao", $this->view->ocupacao['ocupacao']);
         $this->view->salas = $turma->turmaListagem();
 
+        $mensagem = Container::getModel('Mensagem');
+        $id_turma = isset($_GET['id']) ? $_GET['id'] : null;
+        $mensagem->__set("id_turma", $id_turma);
+        $this->view->mensagens = $mensagem->getMensagens();
+        $mensagem->__set("id", $_SESSION['idUserOnline']);
+        if ($this->view->ocupacao['ocupacao'] == 'docente') {
+            $this->view->recentes = $mensagem->getListaChatRecente_docente();
+        } else {
+            $this->view->recentes = $mensagem->getListaChatRecente_discente();
+        }
+        /*
+        echo '<pre>';
+        print_r($this->view->mensagens);
+        echo '</pre>';
+        */
         $this->render('mensagem', 'layoutTimeline');
+    }
+    public function getMessage()
+    {
+        $usuario = Container::getModel('Usuario');
+        $this->view->ocupacao = $usuario->informacoesUsuario();
+
+        $mensagem = Container::getModel('Mensagem');
+        $id_turma = isset($_GET['id']) ? $_GET['id'] : null;
+        $mensagem->__set("id_turma", $id_turma);
+        $mensagem->__set("id", $_SESSION['idUserOnline']);
+        if ($mensagem->verificarSeUsuarioTemMensagem()) {
+            if ($this->view->ocupacao['ocupacao'] == 'docente') {
+                return $this->view->recentes = $mensagem->getListaChatRecente_docente();
+            } else {
+                return $this->view->recentes = $mensagem->getListaChatRecente_discente();
+            }
+        } else {
+            return $this->view->recentes = [];
+        }
+    }
+    public function mensagemSalvar()
+    {
+        if (!$this->validationSessao()) {
+            header("Location: /404");
+        }
+
+        $id_turma = filter_input(INPUT_POST, 'id_turma', FILTER_VALIDATE_INT);
+        $texto = filter_input(INPUT_POST, 'texto', FILTER_UNSAFE_RAW);
+
+        $mensagem = Container::getModel('Mensagem');
+        $mensagem->__set("id_turma", $id_turma);
+        $mensagem->__set("id_user_enviou", $_SESSION['idUserOnline']);
+        $mensagem->__set("texto", $texto);
+        if ($mensagem->salvarMensagem()) {
+            exit(json_encode(array("status" => "true")));
+        } else {
+            exit(json_encode(array("status" => "false")));
+        }
     }
     public function enquete()
     {
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $this->view->recentes = $this->getMessage();
+
+
         $timeZone = new \DateTimeZone('America/Sao_Paulo');
         $objDateTo = new \DateTime();
         $this->view->data = $objDateTo->setTimezone($timeZone);
@@ -159,7 +222,7 @@ class IndexController extends Action
         *}*/
         $this->view->viewEnquete = $this->getEnquete();
         $this->view->viewEnqueteGet = $this->getEe('ff');
-        
+
 
         $this->render('enquete', 'layoutTimeline');
     }
@@ -174,7 +237,7 @@ class IndexController extends Action
         $dataFinal = filter_input(INPUT_POST, 'data_final', FILTER_UNSAFE_RAW);
         $descricao = filter_input(INPUT_POST, 'descricao', FILTER_UNSAFE_RAW);
         $opcao = filter_input(INPUT_POST, 'opcao', FILTER_UNSAFE_RAW);
-        $dataFinal = str_replace("T", ' ', $dataFinal). ':00';
+        $dataFinal = str_replace("T", ' ', $dataFinal) . ':00';
         echo "<pre>";
         print_r($_POST);
         echo '</pre>';
@@ -193,8 +256,12 @@ class IndexController extends Action
         $enquete->__set("descricao", $descricao);
         $enquete->__set("opcao", $opcao);
         if ($enquete->criar()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Enquete criada com sucesso!';
             header('Location: /timeline?response=true');
         } else {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Não conseguimos criar sua enquete!';
             header('Location: /timeline?response=false');
         }
     }
@@ -211,9 +278,13 @@ class IndexController extends Action
         $enquete->__set("idEnquetePergunta", $idReposta);
         $enquete->__set("idEnquete", $_SESSION['idEnqueteCodigo']);
         if ($enquete->salvarVoto()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Você acabou de deixar seu voto em uma enquete!';
             header('Location: /timeline');
         } else {
-            exit('CÊ JÁ VOTOU, MANO!');
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Você já votou nessa enquente!';
+            header('Location: /timeline');
         }
     }
     public function enqueteVotosUsuarios()
@@ -235,6 +306,8 @@ class IndexController extends Action
             header("Location: /404");
         }
 
+        $this->view->recentes = $this->getMessage();
+
         $usuario = Container::getModel('Usuario');
         $this->view->ocupacao = $usuario->informacoesUsuario();
 
@@ -250,7 +323,7 @@ class IndexController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
-        $imagem = filter_input(INPUT_POST, 'image', FILTER_UNSAFE_RAW);
+        $imagem = $_FILES['image'];
         $perfil = Container::getModel("Perfil");
         $perfil->__set("id", $_SESSION['idUserOnline']);
         $perfil->__set("foto", $imagem);
@@ -272,8 +345,12 @@ class IndexController extends Action
         $perfil->__set("senhaAtual", $senhaAtual);
         $perfil->__set("senhaNew", $senhaNew);
         if ($perfil->modificarSenha()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Senha modificada com sucesso!';
             header("Location: /perfil?acao=sucesso");
         } else {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Não conseguimos modificar sua senha';
             header("Location: /perfil?acao=erro");
         }
     }
@@ -296,8 +373,12 @@ class IndexController extends Action
         $perfil->__set("telefone", $telefone);
         $perfil->__set("datanascimento", $datanascimento);
         if ($perfil->modificarDados()) {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'success';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Informações modificadas com sucesso!';
             header("Location: /perfil?acao=sucesso");
         } else {
+            $_SESSION['ALERTA_TOAST_TYPE'] = 'error';
+            $_SESSION['ALERTA_TOAST_MESSAGE'] = 'Não conseguimos modificar as suas informações';
             header("Location: /perfil?acao=erro");
         }
     }
@@ -306,6 +387,7 @@ class IndexController extends Action
         if (!$this->validationSessao()) {
             header("Location: /404");
         }
+        $this->view->recentes = $this->getMessage();
 
         $usuario = Container::getModel('Usuario');
         $this->view->ocupacao = $usuario->informacoesUsuario();

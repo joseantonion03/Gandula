@@ -66,6 +66,17 @@ startApp();
 
 const btnEnviar = document.querySelector('#btn-login');
 btnEnviar.addEventListener('click', login);
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 5000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 async function login(e) {
   e.preventDefault()
@@ -89,8 +100,17 @@ async function login(e) {
       },
       success: function (response) {
         if (response.response == 'success') {
+          Toast.fire({
+            icon: 'success',
+            title: 'Conectado com sucesso'
+          })
           location.href = "/timeline";
         } else {
+
+          Toast.fire({
+            icon: 'error',
+            title: 'Sua e-mail ou sua senha está incorreta'
+          })
           document.querySelector('.form-erro').classList.add('form-erro-show')
           document.querySelector('.form-erro span').innerHTML = "Sua e-mail ou sua senha está incorreta"
           document.querySelector('#btn-login').removeAttribute('disabled');
@@ -99,8 +119,12 @@ async function login(e) {
       }
     });
   } else {
+    Toast.fire({
+      icon: 'warning',
+      title: 'É necessário preencher os campos abaixo'
+    })
     document.querySelector('.form-erro').classList.add('form-erro-show')
-    document.querySelector('.form-erro span').innerHTML = "Os campos estão vazios. Por favor, preencha"
+    document.querySelector('.form-erro span').innerHTML = "É necessário preencher os campos abaixo"
     document.querySelector('#btn-login').removeAttribute('disabled');
     btnEnviar.innerHTML = `<i class="fas fa-sign-in-alt"></i> Acessar`;
   }
@@ -139,15 +163,15 @@ function nextPrev(n) {
   var currentTabAnterior = currentTab;
   // Increase or decrease the current tab by 1:
   currentTab = currentTab + n;
-  if(currentTab >= 0){
-    if(currentTab < x.length){
+  if (currentTab >= 0) {
+    if (currentTab < x.length) {
       timeline[currentTab].classList.add('caminho-icon-analise')
     }
-    if(currentTab > currentTabAnterior){
+    if (currentTab > currentTabAnterior) {
       timeline[currentTabAnterior].classList.remove('caminho-icon-analise')
       timeline[currentTabAnterior].classList.add('caminho-icon-active')
     }
-    if(currentTab < currentTabAnterior){
+    if (currentTab < currentTabAnterior) {
       timeline[currentTab].classList.remove('caminho-icon-active')
       timeline[currentTabAnterior].classList.remove('caminho-icon-analise')
     }
@@ -165,12 +189,12 @@ function nextPrev(n) {
 function validateForm() {
   // This function deals with validation of the form fields
   var x, y, i, valid = true;
-  x = document.getElementsByClassName("tab");   
+  x = document.getElementsByClassName("tab");
   y = x[currentTab].getElementsByTagName("input");
   // A loop that checks every input field in the current tab:
   for (i = 0; i < y.length; i++) {
     // If a field is empty...
-    if(currentTab < 2){
+    if (currentTab < 2) {
       if (y[i].value == "") {
         // add an "invalid" class to the field:
         y[i].className += " invalid";

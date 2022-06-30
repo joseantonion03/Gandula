@@ -29,6 +29,29 @@ button {
   border: 0;
 }
 
+.swal2-popup {
+  flex-direction: initial !important;
+}
+
+.swal2-popup.swal2-toast {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.swal2-popup.swal2-toast .swal2-title {
+  flex-grow: initial !important;
+}
+
+.swal2-popup.swal2-toast,
+.swal2-popup {
+  background: #fafbfc !important;
+}
+
+.swal2-title {
+  color: #6c757d !important;
+}
+
 .in-fx-center {
   display: inline-flex;
   justify-content: center;
