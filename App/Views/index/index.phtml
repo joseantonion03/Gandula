@@ -11,9 +11,6 @@
             <p>bem-vindo de volta, você fez falta!</p>
           </div>
           <div class="formulario-dados">
-            <div class="form-floating mb-2 form-row fx-center formulario-input">
-              <p class="fx-center"><span class="form-row-content"></span> <span class="form-row-texto">ou entre com suas informações</span> <span class="form-row-content"></span></p>
-            </div>
             <div class="form-floating mb-4 formulario-input form-erro">
               <div class="alert alert-warning" role="alert">
                 <span>Sua e-mail ou sua senha está incorreta</span>
@@ -29,7 +26,7 @@
               </div>
             <?php endif; ?>
             <div class="form-floating mb-3 formulario-input">
-              <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+              <input type="email" class="form-control" autocomplete="off" id="floatingInput" placeholder="name@example.com">
               <label for="floatingInput">E-mail</label>
               <div class="formulario-icone">
                 <i class="fas fa-at"></i>

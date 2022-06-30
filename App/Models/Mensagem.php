@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use MF\Model\Model;
+use Spatie\Dropbox\Client as DropboxClient;
 
 class Mensagem extends Model
 {
@@ -23,7 +24,12 @@ class Mensagem extends Model
 
     public function getMensagens()
     {
-
+        //TOKEN DE ACESSO
+        $envPath = realpath(dirname(__FILE__) . '/../../env.ini');
+        $env = parse_ini_file($envPath);
+        $token = $env['tokendropbox'];
+        //INSTANCIA DO CLIENTE DROPBOX
+        $obDropboxClient = new DropboxClient($token);
         $query = "SELECT * FROM mensagem WHERE id_turma = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $this->__get('id_turma'));
@@ -31,13 +37,21 @@ class Mensagem extends Model
             $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             $content = [];
             foreach ($resultado as $value) {
+                $link = '/assets/IMG/PERFIL/perfil.webp';
+
+                //$list = $obDropboxClient->listFolder('/Gandula');
+                if ($this->getInformacoesUser($value['id_user_enviou'])['foto'] == 'perfil.webp') {
+                    $link = '/assets/IMG/PERFIL/perfil.webp';
+                } else {
+                    $link = $obDropboxClient->getTemporaryLink('/Gandula/' . $this->getInformacoesUser($value['id_user_enviou'])['foto'] . '');
+                }
                 $content[] = [
                     "id" => $value['id'],
                     "id_turma" => $value['id_turma'],
                     "id_user_enviou" => $value['id_user_enviou'],
                     "id_user_recebeu" => $value['id_user_recebeu'],
                     "texto" => $value['texto'],
-                    "foto" => $this->getInformacoesUser($value['id_user_enviou'])['foto'],
+                    "foto" => $link,
                     "nome" => $this->getInformacoesUser($value['id_user_enviou'])['nome'],
                 ];
             }

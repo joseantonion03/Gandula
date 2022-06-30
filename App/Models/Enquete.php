@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use MF\Model\Model;
+use Spatie\Dropbox\Client as DropboxClient;
 
 class Enquete extends Model
 {
@@ -74,13 +75,10 @@ class Enquete extends Model
         INNER JOIN enquete_pergunta ON enquete.id_turma=enquete_pergunta.id 
         WHERE enquete.id_turma = :idTurma ORDER BY enquete.id DESC";*/
         $query = "SELECT * FROM enquete WHERE id_turma = :idTurma AND id = :idEnquete ORDER BY id DESC";
-        
+
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':idTurma', $this->__get('idTurma'));
         $stmt->bindValue(':idEnquete', $this->__get('idEnquete'));
-        $stmt->bindValue(':ano', date('Y'));
-        $stmt->bindValue(':mes', date('m'));
-        $stmt->bindValue(':dia', date('d'));
         if ($stmt->execute()) {
             $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultado;
@@ -108,6 +106,13 @@ class Enquete extends Model
     }
     public function mostrarUsuarioVotador()
     {
+        //TOKEN DE ACESSO
+        $envPath = realpath(dirname(__FILE__) . '/../../env.ini');
+        $env = parse_ini_file($envPath);
+        $token = $env['tokendropbox'];
+        //INSTANCIA DO CLIENTE DROPBOX
+        $obDropboxClient = new DropboxClient($token);
+
         $query = "SELECT 
         enquete_resposta.id, 
         enquete_resposta.idEnqueteResposta, 
@@ -121,9 +126,30 @@ class Enquete extends Model
         WHERE enquete_resposta.id = :idEnqueteResposta ORDER BY enquete_resposta.id DESC";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':idEnqueteResposta', $this->__get('idEnqueteResposta'));
+        $content = [];
         if ($stmt->execute()) {
-            $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultado;
+            $value = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            $value = $value[0];
+
+            $link = 'perfil.webp';
+
+            //$list = $obDropboxClient->listFolder('/Gandula');
+            if ($value['foto'] == 'perfil.webp') {
+                $link = 'perfil.webp';
+            } else {
+                $link = $obDropboxClient->getTemporaryLink('/Gandula/' . $value['foto'] . '');
+            }
+
+            $content = [
+                "id" => $value['id'],
+                "idEnqueteResposta" => $value['idEnqueteResposta'],
+                "idEnquete" => $value['idEnquete'],
+                "idDono" => $value['idDono'],
+                "nome" => $value['nome'],
+                "foto" =>  $link,
+            ];
+
+            return $content;
         }
         return [];
     }
@@ -171,14 +197,14 @@ class Enquete extends Model
         $stmt->execute();
         if ($stmt->execute()) {
             $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-  
+
             return $resultado;
         }
         return [];
     }
     public function salvarVoto()
     {
-        if($this->getUserTableEnqueteResposta($this->__get('idEnquete'), $this->__get('id'))){
+        if ($this->getUserTableEnqueteResposta($this->__get('idEnquete'), $this->__get('id'))) {
             return false;
         }
         $query = "INSERT INTO enquete_resposta (idEnqueteResposta, idEnquete, idDono) 

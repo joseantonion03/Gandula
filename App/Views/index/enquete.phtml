@@ -114,7 +114,7 @@
                                                             $jsonResponse = curl_exec($curl);
                                                             //$jsonResponse = json_decode($jsonResponse);
                                                             $jsonResponse = json_decode($jsonResponse);
-                                                            $jsonResponse = $jsonResponse[0][0];
+                                                            $jsonResponse = $jsonResponse[0];
                                                             $fotoPerfilUsuario = $jsonResponse->foto == "perfil.webp" ? "/assets/IMG/PERFIL/perfil.webp" : $jsonResponse->foto;
                                                             echo '<div class="enquete-resultado-usuarios-content btn btn-light my-2 fx-st-ctr">
                                                                 <div class="enquete-resultado-usuarios-foto fx-center">

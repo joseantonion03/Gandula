@@ -44,13 +44,13 @@ if ($salaLiberada) {
                                     if ($mensagem['id_user_enviou'] == $idUserLiderSala) {
                                         echo '<div class="message message-personal new">' . $mensagem['texto'] . '</div>';
                                     } else {
-                                        echo '<div class="message new" title=""><figure class="avatar"><img src="/assets/IMG/PERFIL/' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
+                                        echo '<div class="message new" title=""><figure class="avatar"><img src="' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
                                     }
                                 } else {
                                     if ($mensagem['id_user_enviou'] == $_SESSION['idUserOnline']) {
                                         echo '<div class="message message-personal new">' . $mensagem['texto'] . '</div>';
                                     } else {
-                                        echo '<div class="message new" title=""><figure class="avatar"><img src="/assets/IMG/PERFIL/' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
+                                        echo '<div class="message new" title=""><figure class="avatar"><img src="' . $mensagem['foto'] . '"></figure>' . $mensagem['nome'] . ': ' . $mensagem['texto'] . '</div>';
                                     }
                                 }
                             }
