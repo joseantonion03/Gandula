@@ -1,5 +1,5 @@
 
-![Logo](https://upcdn.io/W142hQ8PY92nMc6KLFYiQC8)
+![Logo](https://www.dropbox.com/s/p8sjw5sno4xts12/Frame%201058.png?dl=0)
 
 
 # Sistema de agendamento e reposição de aula
@@ -55,12 +55,12 @@ Depois
 
 Após feito as alterações do arquivo httpd.conf, basta iniciar o projeto pelo pacote XAMPP, na opção START.
 
-![Start XAMPP](https://www.dropbox.com/home/Gandula-imagens?preview=Captura+de+tela+2022-06-05+231016.png)
+![Start XAMPP](https://www.dropbox.com/s/osc3l1o53qfuzbv/Captura%20de%20tela%202022-06-05%20231016.png?dl=0)
 
 
 ## Screenshots
 
-![App Timeline](https://www.dropbox.com/home/Gandula-imagens?preview=Captura+de+tela+2022-06-05+232357.png)
+![App Timeline](https://www.dropbox.com/s/w94e31kac1iknxo/Captura%20de%20tela%202022-06-05%20232357.png?dl=0)
 
 
 ## Suporte
