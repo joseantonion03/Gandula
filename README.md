@@ -55,12 +55,12 @@ Depois
 
 Após feito as alterações do arquivo httpd.conf, basta iniciar o projeto pelo pacote XAMPP, na opção START.
 
-![Start XAMPP](https://upcdn.io/W142hQ8KSMu5Sk4QNahBQMb)
+![Start XAMPP](https://www.dropbox.com/home/Gandula-imagens?preview=Captura+de+tela+2022-06-05+231016.png)
 
 
 ## Screenshots
 
-![App Timeline](https://upcdn.io/W142hQ8Y1KcGdzUvWv32rgm)
+![App Timeline](https://www.dropbox.com/home/Gandula-imagens?preview=Captura+de+tela+2022-06-05+232357.png)
 
 
 ## Suporte
