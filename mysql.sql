@@ -75,3 +75,13 @@ CREATE TABLE `enquete_resposta` (
   `idDono` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4
+
+CREATE TABLE
+  `mensagem` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `id_turma` int(11) NOT NULL,
+    `id_user_enviou` int(11) NOT NULL,
+    `id_user_recebeu` int(11) NOT NULL,
+    `texto` longtext NOT NULL,
+    PRIMARY KEY (`id`)
+  ) ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4
